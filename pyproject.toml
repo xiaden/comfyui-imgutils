@@ -1,0 +1,29 @@
+[project]
+name = "comfyui-imgutils"
+version = "0.1.0"
+description = "ComfyUI custom nodes wrapping deepghs/imgutils for anime image analysis, tagging, detection, pose estimation, and segmentation."
+readme = "README.md"
+authors = [
+    { name = "imgutils_nodes contributors" }
+]
+license = { file = "LICENSE" }
+dependencies = [
+    "dghs-imgutils[gpu]>=0.19.0",
+]
+requires-python = ">=3.10"
+keywords = ["comfyui", "anime", "tagging", "detection", "pose", "segmentation", "imgutils"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+[project.urls]
+Repository = "https://github.com/deepghs/imgutils"
+
+[tool.comfy]
+PublisherId = "imgutils"
+DisplayName = "ImgUtils Nodes"
+Icon = ""
+requires-comfyui = ">=0.3.0"
