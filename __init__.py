@@ -46,6 +46,18 @@ except Exception:
     )
 
 try:
+    from .node_detect import ImgUtilsDetect
+
+    NODE_CLASS_MAPPINGS["ImgUtilsDetect"] = ImgUtilsDetect
+    NODE_DISPLAY_NAME_MAPPINGS["ImgUtilsDetect"] = "Imgutils Detect"
+except Exception:
+    logger.warning(
+        "imgutils_nodes: ImgUtilsDetect node could not be imported. "
+        "This node will be unavailable.",
+        exc_info=True,
+    )
+
+try:
     from .node_transform import ImgUtilsTransform
 
     NODE_CLASS_MAPPINGS["ImgUtilsTransform"] = ImgUtilsTransform
