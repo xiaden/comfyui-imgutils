@@ -105,6 +105,18 @@ except Exception:
         exc_info=True,
     )
 
+try:
+    from .node_tagging import ImgUtilsTags
+
+    NODE_CLASS_MAPPINGS["ImgUtilsTags"] = ImgUtilsTags
+    NODE_DISPLAY_NAME_MAPPINGS["ImgUtilsTags"] = "Imgutils Tags"
+except Exception:
+    logger.warning(
+        "imgutils_nodes: ImgUtilsTags node could not be imported. "
+        "This node will be unavailable.",
+        exc_info=True,
+    )
+
 # Startup logging
 n_nodes = len(NODE_CLASS_MAPPINGS)
 logger.info(f"imgutils_nodes v{__version__}: Loaded {n_nodes} nodes.")
