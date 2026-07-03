@@ -32,22 +32,22 @@ class ImgUtilsValidate(io.ComfyNode):
     """Validate/classify an image using imgutils functions."""
 
     DROPDOWN_OPTIONS = [
-        "safe_check",
-        "nsfw_pred",
-        "anime_rating",
-        "anime_dbrating",
-        "anime_teen",
-        "anime_classify",
-        "anime_real",
-        "anime_portrait",
-        "anime_furry",
-        "anime_bangumi_char",
-        "anime_style_age",
-        "is_ai_created",
-        "is_monochrome",
+        "safe_check (~6 MB)",
+        "nsfw_pred (~10 MB)",
+        "anime_rating (~143 MB)",
+        "anime_dbrating (~143 MB)",
+        "anime_teen (~143 MB)",
+        "anime_classify (~143 MB)",
+        "anime_real (~143 MB)",
+        "anime_portrait (~143 MB)",
+        "anime_furry (~143 MB)",
+        "anime_bangumi_char (~143 MB)",
+        "anime_style_age (~143 MB)",
+        "is_ai_created (~143 MB)",
+        "is_monochrome (~143 MB)",
         "get_monochrome_score",
         "is_greyscale",
-        "anime_completeness",
+        "anime_completeness (~143 MB)",
         "is_truncated",
         "laplacian_score",
     ]
@@ -97,6 +97,8 @@ class ImgUtilsValidate(io.ComfyNode):
             - full_response: JSON for classification, raw string for boolean,
                              detail string for numeric scores
         """
+        operation = operation.split(" (")[0]  # strip size annotation
+
         from imgutils.metrics import laplacian_score
         from imgutils.validate import (
             anime_bangumi_char_score,

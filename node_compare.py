@@ -21,9 +21,9 @@ class ImgUtilsCompare(io.ComfyNode):
     """Compare two images using imgutils metrics."""
 
     DROPDOWN_OPTIONS = [
-        "ccip_difference",
+        "ccip_difference (~143 MB)",
         "ccip_same",
-        "lpips_difference",
+        "lpips_difference (~10 MB)",
     ]
 
     @classmethod
@@ -68,6 +68,8 @@ class ImgUtilsCompare(io.ComfyNode):
         Returns:
             NodeOutput with (text_string,)
         """
+        operation = operation.split(" (")[0]  # strip size annotation
+
         pil_a = comfy_to_pil(image_a.numpy() if hasattr(image_a, "numpy") else image_a)
         pil_b = comfy_to_pil(image_b.numpy() if hasattr(image_b, "numpy") else image_b)
 

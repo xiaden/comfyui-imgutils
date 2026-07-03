@@ -37,6 +37,7 @@ class ImgUtilsDetect(io.ComfyNode):
         "detect_halfbody",
         "detect_with_nudenet",
         "detect_censors",
+        "detect_text_with_ocr",
         "detect_with_booru_yolo",
     ]
 
@@ -48,11 +49,12 @@ class ImgUtilsDetect(io.ComfyNode):
             category="imgutils/detect",
             description=(
                 "Detect faces, hands, heads, eyes, persons, half-bodies, "
-                "nude regions, censors, and Booru-tagged objects in anime images."
+                "text regions, nude areas, censors, and Booru-tagged objects in anime images."
             ),
             search_aliases=[
                 "detect", "detection", "face", "hand", "head", "eye",
                 "person", "nudenet", "censor", "booru", "yolo", "bbox",
+                "text", "ocr",
             ],
             inputs=[
                 io.Image.Input("image", tooltip="Input image to detect objects in"),
@@ -111,6 +113,7 @@ def _run_detection(pil_image, operation: str, confidence: float) -> list:
         "detect_halfbody": "imgutils.detect.detect_halfbody",
         "detect_with_nudenet": "imgutils.detect.detect_with_nudenet",
         "detect_censors": "imgutils.detect.detect_censors",
+        "detect_text_with_ocr": "imgutils.ocr.detect_text_with_ocr",
         "detect_with_booru_yolo": "imgutils.detect.detect_with_booru_yolo",
     }
 

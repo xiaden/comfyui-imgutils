@@ -30,13 +30,13 @@ class ImgUtilsTransform(io.ComfyNode):
 
     DROPDOWN_OPTIONS = [
         "edge_image_with_canny",
-        "edge_image_with_lineart",
-        "edge_image_with_lineart_anime",
-        "restore_with_scunet",
-        "restore_with_nafnet",
-        "remove_adversarial_noise",
-        "upscale_with_cdc",
-        "censor_nsfw",
+        "edge_image_with_lineart (~17 MB)",
+        "edge_image_with_lineart_anime (~208 MB)",
+        "restore_with_scunet (~87 MB)",
+        "restore_with_nafnet (~263 MB)",
+        "remove_adversarial_noise (~263 MB)",
+        "upscale_with_cdc (~153 MB)",
+        "censor_nsfw (~10 MB)",
         "censor_areas",
         "align_maxsize",
         "squeeze_with_transparency",
@@ -84,6 +84,8 @@ class ImgUtilsTransform(io.ComfyNode):
         Returns:
             NodeOutput with (IMAGE_tensor,)
         """
+        operation = operation.split(" (")[0]  # strip size annotation
+
         pil_image = comfy_to_pil(image.numpy() if hasattr(image, "numpy") else image)
 
         # ---- Edge detection ----
