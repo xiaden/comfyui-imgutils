@@ -86,8 +86,8 @@ Or install via ComfyUI-Manager (once published to the Registry).
 ## Requirements
 
 - Python >= 3.10
-- `dghs-imgutils >= 0.19.0` — the underlying analysis library (installed via `requirements.txt`)
-- `onnxruntime` — for ONNX model inference. ComfyUI already ships both `onnxruntime` (CPU) and `onnxruntime-gpu` (CUDA) in its venv. The `dghs-imgutils[gpu]` extra also pulls `onnxruntime-gpu` on install, so there is nothing to manually install or replace.
+- `dghs-imgutils[gpu] >= 0.19.0` — the underlying analysis library with GPU-accelerated ONNX runtime
+- `onnxruntime` — provided by ComfyUI (ships both CPU and GPU variants in its venv) and pulled by `dghs-imgutils[gpu]` on install. Nothing to manually configure.
 
 Models are downloaded automatically from HuggingFace Hub on first use and cached to `~/.cache/huggingface/hub/`. No manual model downloads needed.
 
