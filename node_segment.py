@@ -34,6 +34,10 @@ class ImgUtilsSegment(io.ComfyNode):
             ],
             inputs=[
                 io.Image.Input("image", tooltip="Input image containing character to segment"),
+                io.Int.Input(
+                    "scale", default=1024, min=256, max=2048, step=128,
+                    tooltip="Processing resolution. Higher = more accurate, slower. Default 1024.",
+                ),
             ],
             outputs=[
                 io.Mask.Output(display_name="mask"),
@@ -42,7 +46,7 @@ class ImgUtilsSegment(io.ComfyNode):
         )
 
     @classmethod
-    def execute(cls, image) -> io.NodeOutput:
+    def execute(cls, image, scale=1024) -> io.NodeOutput:
         """
         Run character segmentation and return mask + RGBA image.
 
@@ -56,7 +60,7 @@ class ImgUtilsSegment(io.ComfyNode):
 
         pil_image = comfy_to_pil(image.numpy() if hasattr(image, "numpy") else image)
 
-        mask_pil, rgba_pil = segment_rgba_with_isnetis(pil_image)
+        mask_pil, rgba_pil = segment_rgba_with_isnetis(pil_image, scale=int(scale))
 
         # pil_to_comfy handles grayscale "L" mode (mask) and "RGBA" mode
         mask_tensor = pil_to_comfy(mask_pil)

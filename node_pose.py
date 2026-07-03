@@ -58,6 +58,10 @@ class ImgUtilsPose(io.ComfyNode):
                     default="full",
                     tooltip="Visualization detail preset: body only, body+face, body+hands, or full (all keypoints).",
                 ),
+                io.Boolean.Input(
+                    "auto_detect", default=True,
+                    tooltip="Auto-detect person bounding boxes. Disable to use full image.",
+                ),
             ],
             outputs=[
                 io.Image.Output(display_name="visualization"),
@@ -66,7 +70,7 @@ class ImgUtilsPose(io.ComfyNode):
         )
 
     @classmethod
-    def execute(cls, image, visualization) -> io.NodeOutput:
+    def execute(cls, image, visualization, auto_detect=True) -> io.NodeOutput:
         """
         Detect pose keypoints and render visualization.
 
@@ -82,7 +86,7 @@ class ImgUtilsPose(io.ComfyNode):
         pil_image = comfy_to_pil(image.numpy() if hasattr(image, "numpy") else image)
 
         # Estimate keypoints
-        keypoints_list = dwpose_estimate(pil_image)
+        keypoints_list = dwpose_estimate(pil_image, auto_detect=bool(auto_detect))
 
         # Build JSON from keypoints
         json_str = keypoints_to_json(keypoints_list)
