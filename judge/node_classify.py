@@ -13,7 +13,7 @@ class ImgUtilsClassify(io.ComfyNode):
     def define_schema(cls) -> io.Schema:
         return io.Schema(
             node_id="ImgUtilsClassify", display_name="Imgutils Classify",
-            category="imgutils/validate",
+            category="imgutils/judge",
             description="Classify anime images — safety, NSFW, content rating, style, and character detection.",
             search_aliases=["classify", "safety", "nsfw", "rating", "style", "character"],
             inputs=[

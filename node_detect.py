@@ -18,6 +18,7 @@ Dropdown options (9):
 
 from __future__ import annotations
 
+import json
 from collections import Counter
 
 from comfy_api.latest import io
@@ -76,6 +77,7 @@ class ImgUtilsDetect(io.ComfyNode):
             outputs=[
                 io.String.Output(display_name="detections"),
                 io.String.Output(display_name="boxes"),
+                io.String.Output(display_name="bboxes"),
             ],
         )
 
@@ -97,7 +99,11 @@ class ImgUtilsDetect(io.ComfyNode):
         pil_image = comfy_to_pil(image.numpy() if hasattr(image, "numpy") else image)
         results = _run_detection(pil_image, operation, float(confidence))
         detections_str, boxes_str = _format_detection_results(results, confidence)
-        return io.NodeOutput(detections_str, boxes_str)
+        bboxes_json = json.dumps([
+            {"bbox": [bbox[0], bbox[1], bbox[2], bbox[3]], "label": label, "confidence": conf}
+            for bbox, label, conf in results
+        ], ensure_ascii=False)
+        return io.NodeOutput(detections_str, boxes_str, bboxes_json)
 
 
 def _run_detection(pil_image, operation: str, confidence: float) -> list:

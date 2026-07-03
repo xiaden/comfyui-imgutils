@@ -10,7 +10,7 @@ class ImgUtilsMetric(io.ComfyNode):
     def define_schema(cls) -> io.Schema:
         return io.Schema(
             node_id="ImgUtilsMetric", display_name="Imgutils Metric",
-            category="imgutils/validate",
+            category="imgutils/judge",
             description="Numeric image quality metrics — monochrome score and sharpness (Laplacian).",
             search_aliases=["metric", "score", "sharpness", "laplacian", "monochrome", "blur"],
             inputs=[

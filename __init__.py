@@ -90,6 +90,13 @@ try:
 except Exception:
     logger.warning("ImgUtilsSqueeze unavailable.", exc_info=True)
 
+try:
+    from .node_bbox import ImgUtilsBboxUnpack
+    NODE_CLASS_MAPPINGS["ImgUtilsBboxUnpack"] = ImgUtilsBboxUnpack
+    NODE_DISPLAY_NAME_MAPPINGS["ImgUtilsBboxUnpack"] = "Imgutils Bbox Unpack"
+except Exception:
+    logger.warning("ImgUtilsBboxUnpack unavailable.", exc_info=True)
+
 # --- Sub-packages ---
 
 try:
@@ -117,10 +124,10 @@ except Exception:
     logger.warning("Compare nodes unavailable.", exc_info=True)
 
 try:
-    from .validate import NODE_CLASS_MAPPINGS as _cm, NODE_DISPLAY_NAME_MAPPINGS as _dn
-    _merge("validate", _cm, _dn)
+    from .judge import NODE_CLASS_MAPPINGS as _cm, NODE_DISPLAY_NAME_MAPPINGS as _dn
+    _merge("judge", _cm, _dn)
 except Exception:
-    logger.warning("Validate nodes unavailable.", exc_info=True)
+    logger.warning("Judge nodes unavailable.", exc_info=True)
 
 # --- Startup ---
 

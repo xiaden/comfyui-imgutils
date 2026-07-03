@@ -11,7 +11,7 @@ class ImgUtilsCheck(io.ComfyNode):
     def define_schema(cls) -> io.Schema:
         return io.Schema(
             node_id="ImgUtilsCheck", display_name="Imgutils Check",
-            category="imgutils/validate",
+            category="imgutils/judge",
             description="Boolean checks — AI-created detection, monochrome, greyscale, truncation, completeness.",
             search_aliases=["check", "boolean", "ai", "monochrome", "greyscale", "truncated", "completeness"],
             inputs=[

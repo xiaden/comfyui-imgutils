@@ -6,6 +6,8 @@ Extracts text from images using PaddleOCR through imgutils.
 
 from __future__ import annotations
 
+import json
+
 from comfy_api.latest import io
 
 from ..utils import comfy_to_pil
@@ -41,6 +43,7 @@ class ImgUtilsOCR(io.ComfyNode):
             outputs=[
                 io.String.Output(display_name="text"),
                 io.String.Output(display_name="scores"),
+                io.String.Output(display_name="bboxes"),
             ],
         )
 
@@ -64,4 +67,8 @@ class ImgUtilsOCR(io.ComfyNode):
             f"  [{bbox[0]},{bbox[1]},{bbox[2]},{bbox[3]}] \"{text}\" ({conf:.4f})"
             for bbox, text, conf in results
         )
-        return io.NodeOutput(text_only, text_scores)
+        bboxes_json = json.dumps([
+            {"bbox": [bbox[0], bbox[1], bbox[2], bbox[3]], "text": text, "confidence": conf}
+            for bbox, text, conf in results
+        ], ensure_ascii=False)
+        return io.NodeOutput(text_only, text_scores, bboxes_json)
