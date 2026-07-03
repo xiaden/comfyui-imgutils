@@ -20,17 +20,14 @@ def _parse_bboxes(text: str) -> list[dict[str, Any]]:
 
     Accepts these formats (preference order):
 
-    1. JSON array:
+    1. JSON array (ImgUtilsOCR/ImgUtilsDetect "bboxes" output):
        [{"bbox": [x1,y1,x2,y2], "label": "...", "score": 0.95}, ...]
 
-    2. Detection format (ImgUtilsDetect):
+    2. Detection text (ImgUtilsDetect "boxes" output):
        [x1,y1,x2,y2] label (0.9500)
 
-    3. OCR format (ImgUtilsOCR):
+    3. OCR text (ImgUtilsOCR "scores" output):
        [x1,y1,x2,y2] "text" (0.9500)
-
-    4. Raw tuple format:
-       [(x1, y1, x2, y2), "label", 0.95]
     """
     text = text.strip()
 
@@ -50,8 +47,8 @@ def _parse_bboxes(text: str) -> list[dict[str, Any]]:
                     entries.append({
                         "x1": int(bbox[0]), "y1": int(bbox[1]),
                         "x2": int(bbox[2]), "y2": int(bbox[3]),
-                        "label": str(item.get("label") or item.get("text") or ""),
-                        "score": float(item.get("score") or item.get("confidence") or 0.0),
+                        "label": str(item["label"]),
+                        "score": float(item["score"]),
                     })
             if entries:
                 return entries
@@ -90,23 +87,6 @@ def _parse_bboxes(text: str) -> list[dict[str, Any]]:
             for x1, y1, x2, y2, label, score in ocr_matches
         ]
 
-    # ---- 4. Raw tuple format ----
-    tuple_pattern = re.compile(
-        r"\(?\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)?\s*,\s*"
-        r"[\"']?([^\"',]+?)[\"']?\s*(?:,\s*([\d.]+))?"
-    )
-    tuple_matches = tuple_pattern.findall(text)
-    if tuple_matches:
-        return [
-            {
-                "x1": int(x1), "y1": int(y1),
-                "x2": int(x2), "y2": int(y2),
-                "label": label.strip(),
-                "score": float(score) if score else 0.0,
-            }
-            for x1, y1, x2, y2, label, score in tuple_matches
-        ]
-
     return []
 
 
@@ -117,7 +97,7 @@ class ImgUtilsBboxUnpack(io.ComfyNode):
     def define_schema(cls) -> io.Schema:
         return io.Schema(
             node_id="ImgUtilsBboxUnpack",
-            display_name="ImgUtils Bbox Unpack",
+            display_name="Imgutils Bbox Unpack",
             category="imgutils/bbox",
             description=(
                 "Unpack a raw bbox result string from imgutils OCR or detection nodes "

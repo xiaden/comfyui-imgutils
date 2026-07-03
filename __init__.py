@@ -1,7 +1,7 @@
 """
 imgutils_nodes — ComfyUI custom node pack wrapping deepghs/imgutils.
 
-Provides 26 nodes for anime image analysis, tagging, detection, and processing.
+Provides 27 nodes for anime image analysis, tagging, detection, and processing.
 Uses the ComfyUI V2 io.ComfyNode API.
 """
 

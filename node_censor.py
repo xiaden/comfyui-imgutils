@@ -1,7 +1,7 @@
 """Node: ImgUtilsCensor — NSFW content censoring."""
 from __future__ import annotations
 from comfy_api.latest import io
-from ..utils import comfy_to_pil, pil_to_comfy
+from .utils import comfy_to_pil, pil_to_comfy
 
 class ImgUtilsCensor(io.ComfyNode):
     METHODS = ["pixelate", "blur", "color"]

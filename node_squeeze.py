@@ -1,7 +1,7 @@
 """Node: ImgUtilsSqueeze — Crop to visible content using transparency."""
 from __future__ import annotations
 from comfy_api.latest import io
-from ..utils import comfy_to_pil, pil_to_comfy
+from .utils import comfy_to_pil, pil_to_comfy
 
 class ImgUtilsSqueeze(io.ComfyNode):
     @classmethod

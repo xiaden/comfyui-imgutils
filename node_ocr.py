@@ -10,7 +10,7 @@ import json
 
 from comfy_api.latest import io
 
-from ..utils import comfy_to_pil
+from .utils import comfy_to_pil
 
 
 class ImgUtilsOCR(io.ComfyNode):

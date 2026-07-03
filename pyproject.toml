@@ -1,7 +1,7 @@
 [project]
 name = "comfyui-imgutils"
 version = "0.1.0"
-description = "26 ComfyUI V2 nodes wrapping deepghs/imgutils — anime image tagging, classification, edge detection, restoration, upscaling, OCR, pose estimation, segmentation, and comparison."
+description = "27 ComfyUI V2 nodes wrapping deepghs/imgutils — anime image tagging, classification, edge detection, restoration, upscaling, OCR, pose estimation, segmentation, and comparison."
 readme = "README.md"
 authors = [
     { name = "imgutils_nodes contributors" }

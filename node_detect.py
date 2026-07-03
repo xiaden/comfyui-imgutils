@@ -4,7 +4,7 @@ Node 3: ImgUtilsDetect — "Detect things"
 Routes a dropdown to imgutils detection functions.
 Outputs detection labels/counts and detailed bounding boxes.
 
-Dropdown options (9):
+Dropdown options (10):
   detect_faces          -> imgutils.detect.detect_faces()
   detect_hands          -> imgutils.detect.detect_hands()
   detect_heads          -> imgutils.detect.detect_heads()
