@@ -68,7 +68,7 @@ class ImgUtilsOCR(io.ComfyNode):
             for bbox, text, conf in results
         )
         bboxes_json = json.dumps([
-            {"bbox": [bbox[0], bbox[1], bbox[2], bbox[3]], "text": text, "confidence": conf}
+            {"bbox": [bbox[0], bbox[1], bbox[2], bbox[3]], "label": text, "score": conf}
             for bbox, text, conf in results
         ], ensure_ascii=False)
         return io.NodeOutput(text_only, text_scores, bboxes_json)

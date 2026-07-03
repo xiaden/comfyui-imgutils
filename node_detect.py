@@ -100,7 +100,7 @@ class ImgUtilsDetect(io.ComfyNode):
         results = _run_detection(pil_image, operation, float(confidence))
         detections_str, boxes_str = _format_detection_results(results, confidence)
         bboxes_json = json.dumps([
-            {"bbox": [bbox[0], bbox[1], bbox[2], bbox[3]], "label": label, "confidence": conf}
+            {"bbox": [bbox[0], bbox[1], bbox[2], bbox[3]], "label": label, "score": conf}
             for bbox, label, conf in results
         ], ensure_ascii=False)
         return io.NodeOutput(detections_str, boxes_str, bboxes_json)
