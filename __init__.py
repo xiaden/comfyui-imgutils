@@ -9,26 +9,60 @@ import logging
 
 from comfy_api.latest import ComfyExtension, io
 
-from .compare import NODE_CLASSES as _compare_nodes
-from .detect import NODE_CLASSES as _detect_nodes
-from .edge import NODE_CLASSES as _edge_nodes
-from .judge import NODE_CLASSES as _judge_nodes
-from .pose import NODE_CLASSES as _pose_nodes
-from .restore import NODE_CLASSES as _restore_nodes
-from .segment import NODE_CLASSES as _segment_nodes
-from .tagging import NODE_CLASSES as _tagging_nodes
-from .transform import NODE_CLASSES as _transform_nodes
-from .utility import NODE_CLASSES as _utility_nodes
+from .compare.node_ccip import ImgUtilsCCIP
+from .compare.node_lpips import ImgUtilsLPIPS
+from .detect.node_detect import ImgUtilsDetect
+from .detect.node_ocr import ImgUtilsOCR
+from .edge.node_canny import ImgUtilsCanny
+from .edge.node_lineart import ImgUtilsLineart
+from .edge.node_lineart_anime import ImgUtilsLineartAnime
+from .judge.node_classify import ImgUtilsClassify
+from .judge.node_check import ImgUtilsCheck
+from .judge.node_metric import ImgUtilsMetric
+from .pose.node_pose import ImgUtilsPose
+from .restore.node_scunet import ImgUtilsSCUNet
+from .restore.node_nafnet import ImgUtilsNAFNet
+from .restore.node_adversarial import ImgUtilsAdversarial
+from .segment.node_segment import ImgUtilsSegment
+from .tagging.node_wd14 import ImgUtilsWD14
+from .tagging.node_deepdanbooru import ImgUtilsDeepDanbooru
+from .tagging.node_deepgelbooru import ImgUtilsDeepGelbooru
+from .tagging.node_mldanbooru import ImgUtilsMLDanbooru
+from .tagging.node_camie import ImgUtilsCamie
+from .tagging.node_pixai import ImgUtilsPixAI
+from .tagging.node_tags import ImgUtilsTags
+from .transform.node_cdc import ImgUtilsCDC
+from .transform.node_censor import ImgUtilsCensor
+from .transform.node_align import ImgUtilsAlign
+from .transform.node_squeeze import ImgUtilsSqueeze
+from .utility.node_bbox import ImgUtilsBboxUnpack
+from .utility.node_bbox_crop import ImgUtilsBboxCrop
+from .utility.node_bbox_mask import ImgUtilsBboxMask
+from .utility.node_contains import ImgUtilsLabelContains
+from .utility.node_dedup import ImgUtilsDedup
+from .utility.node_score_threshold import ImgUtilsScoreThreshold
+from .utility.node_bool_logic import ImgUtilsBoolLogic
+from .utility.node_json_filter import ImgUtilsJSONFilter
 
 __version__ = "0.1.0"
 
 logger = logging.getLogger(__name__)
 
-_NODE_CLASSES: list[type[io.ComfyNode]] = (
-    _compare_nodes + _detect_nodes + _edge_nodes + _judge_nodes
-    + _pose_nodes + _restore_nodes + _segment_nodes + _tagging_nodes
-    + _transform_nodes + _utility_nodes
-)
+_NODE_CLASSES: list[type[io.ComfyNode]] = [
+    ImgUtilsCCIP, ImgUtilsLPIPS,
+    ImgUtilsDetect, ImgUtilsOCR,
+    ImgUtilsCanny, ImgUtilsLineart, ImgUtilsLineartAnime,
+    ImgUtilsClassify, ImgUtilsCheck, ImgUtilsMetric,
+    ImgUtilsPose,
+    ImgUtilsSCUNet, ImgUtilsNAFNet, ImgUtilsAdversarial,
+    ImgUtilsSegment,
+    ImgUtilsWD14, ImgUtilsDeepDanbooru, ImgUtilsDeepGelbooru,
+    ImgUtilsMLDanbooru, ImgUtilsCamie, ImgUtilsPixAI, ImgUtilsTags,
+    ImgUtilsCDC, ImgUtilsCensor, ImgUtilsAlign, ImgUtilsSqueeze,
+    ImgUtilsBboxUnpack, ImgUtilsBboxCrop, ImgUtilsBboxMask,
+    ImgUtilsLabelContains, ImgUtilsDedup, ImgUtilsScoreThreshold,
+    ImgUtilsBoolLogic, ImgUtilsJSONFilter,
+]
 
 n_nodes = len(_NODE_CLASSES)
 logger.info(f"imgutils_nodes v{__version__}: Loaded {n_nodes} nodes.")
@@ -38,7 +72,21 @@ if n_nodes == 0:
 
 class ImgUtilsExtension(ComfyExtension):
     async def get_node_list(self) -> list[type[io.ComfyNode]]:
-        return list(_NODE_CLASSES)
+        return [
+            ImgUtilsCCIP, ImgUtilsLPIPS,
+            ImgUtilsDetect, ImgUtilsOCR,
+            ImgUtilsCanny, ImgUtilsLineart, ImgUtilsLineartAnime,
+            ImgUtilsClassify, ImgUtilsCheck, ImgUtilsMetric,
+            ImgUtilsPose,
+            ImgUtilsSCUNet, ImgUtilsNAFNet, ImgUtilsAdversarial,
+            ImgUtilsSegment,
+            ImgUtilsWD14, ImgUtilsDeepDanbooru, ImgUtilsDeepGelbooru,
+            ImgUtilsMLDanbooru, ImgUtilsCamie, ImgUtilsPixAI, ImgUtilsTags,
+            ImgUtilsCDC, ImgUtilsCensor, ImgUtilsAlign, ImgUtilsSqueeze,
+            ImgUtilsBboxUnpack, ImgUtilsBboxCrop, ImgUtilsBboxMask,
+            ImgUtilsLabelContains, ImgUtilsDedup, ImgUtilsScoreThreshold,
+            ImgUtilsBoolLogic, ImgUtilsJSONFilter,
+        ]
 
 
 async def comfy_entrypoint() -> ImgUtilsExtension:
