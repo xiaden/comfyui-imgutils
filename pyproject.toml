@@ -1,6 +1,6 @@
 [project]
 name = "comfyui-imgutils"
-version = "0.0.1"
+version = "0.0.2"
 description = "ComfyUI V2 nodes wrapping deepghs/imgutils for anime image analysis and processing."
 readme = "README.md"
 authors = [
@@ -24,6 +24,6 @@ Repository = "https://github.com/xiaden/comfyui-imgutils"
 
 [tool.comfy]
 PublisherId = "xiaden"
-DisplayName = "rebelagainstthegods"
+DisplayName = "imgutils"
 Icon = ""
 requires-comfyui = ">=0.25.0"
