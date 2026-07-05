@@ -1,6 +1,6 @@
 [project]
 name = "comfyui-imgutils"
-version = "0.0.4"
+version = "0.0.5"
 description = "ComfyUI V3 nodes wrapping deepghs/imgutils for anime image analysis and processing."
 readme = "README.md"
 authors = [
