@@ -1,7 +1,7 @@
 [project]
 name = "comfyui-imgutils"
 version = "0.0.2"
-description = "ComfyUI V2 nodes wrapping deepghs/imgutils for anime image analysis and processing."
+description = "ComfyUI V3 nodes wrapping deepghs/imgutils for anime image analysis and processing."
 readme = "README.md"
 authors = [
     { name = "xiaden" }

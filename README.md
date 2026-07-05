@@ -2,7 +2,7 @@
 
 ComfyUI custom nodes wrapping [deepghs/imgutils](https://github.com/deepghs/imgutils) — a comprehensive toolbox for anime image analysis, tagging, detection, pose estimation, and segmentation.
 
-All nodes use the **ComfyUI V2 `io.ComfyNode` API**. Requires ComfyUI ≥ 0.25.0.
+All nodes use the **ComfyUI V3 `io.ComfyNode` API**. Requires ComfyUI ≥ 0.25.0.
 
 ## Nodes (34)
 
