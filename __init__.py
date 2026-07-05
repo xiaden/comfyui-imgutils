@@ -9,37 +9,26 @@ import logging
 
 from comfy_api.latest import ComfyExtension, io
 
+from .compare import NODE_CLASSES as _compare_nodes
+from .detect import NODE_CLASSES as _detect_nodes
+from .edge import NODE_CLASSES as _edge_nodes
+from .judge import NODE_CLASSES as _judge_nodes
+from .pose import NODE_CLASSES as _pose_nodes
+from .restore import NODE_CLASSES as _restore_nodes
+from .segment import NODE_CLASSES as _segment_nodes
+from .tagging import NODE_CLASSES as _tagging_nodes
+from .transform import NODE_CLASSES as _transform_nodes
+from .utility import NODE_CLASSES as _utility_nodes
+
 __version__ = "0.1.0"
 
 logger = logging.getLogger(__name__)
 
-# Pure V3 extension — no NODE_CLASS_MAPPINGS at module level.
-# Node classes are collected at import time into an internal list
-# and served through the ComfyExtension interface.
-
-_SUB_PACKAGES: list[str] = [
-    "tagging", "detect", "pose", "segment",
-    "edge", "restore", "compare", "judge",
-    "transform", "utility",
-]
-
-_NODE_CLASSES: list[type[io.ComfyNode]] = []
-
-
-def _register_subpackage(pkg: str) -> None:
-    """Import a subpackage and collect its node classes into the extension list."""
-    try:
-        mod = __import__(
-            f"{__name__}.{pkg}",
-            fromlist=["NODE_CLASS_MAPPINGS"],
-        )
-        _NODE_CLASSES.extend(mod.NODE_CLASS_MAPPINGS.values())
-    except Exception:
-        logger.warning(f"{pkg.title()} nodes unavailable.", exc_info=True)
-
-
-for _pkg in _SUB_PACKAGES:
-    _register_subpackage(_pkg)
+_NODE_CLASSES: list[type[io.ComfyNode]] = (
+    _compare_nodes + _detect_nodes + _edge_nodes + _judge_nodes
+    + _pose_nodes + _restore_nodes + _segment_nodes + _tagging_nodes
+    + _transform_nodes + _utility_nodes
+)
 
 n_nodes = len(_NODE_CLASSES)
 logger.info(f"imgutils_nodes v{__version__}: Loaded {n_nodes} nodes.")

@@ -1,16 +1,16 @@
 """imgutils_nodes utility sub-package — bbox, label, dedup, threshold, boolean logic, and JSON filter nodes."""
 
-from .._shared import register_nodes
+from .node_bbox import ImgUtilsBboxUnpack
+from .node_bbox_crop import ImgUtilsBboxCrop
+from .node_bbox_mask import ImgUtilsBboxMask
+from .node_contains import ImgUtilsLabelContains
+from .node_dedup import ImgUtilsDedup
+from .node_score_threshold import ImgUtilsScoreThreshold
+from .node_bool_logic import ImgUtilsBoolLogic
+from .node_json_filter import ImgUtilsJSONFilter
 
-NODES: list[tuple[str, str, str]] = [
-    ("node_bbox", "ImgUtilsBboxUnpack", "Imgutils Bbox Unpack"),
-    ("node_bbox_crop", "ImgUtilsBboxCrop", "Imgutils Bbox Crop"),
-    ("node_bbox_mask", "ImgUtilsBboxMask", "Imgutils Bbox Mask"),
-    ("node_contains", "ImgUtilsLabelContains", "Imgutils Label Contains"),
-    ("node_dedup", "ImgUtilsDedup", "Imgutils Deduplicate Tags"),
-    ("node_score_threshold", "ImgUtilsScoreThreshold", "Imgutils Score Threshold"),
-    ("node_bool_logic", "ImgUtilsBoolLogic", "Imgutils Boolean Logic"),
-    ("node_json_filter", "ImgUtilsJSONFilter", "Imgutils JSON Filter"),
+NODE_CLASSES = [
+    ImgUtilsBboxUnpack, ImgUtilsBboxCrop, ImgUtilsBboxMask,
+    ImgUtilsLabelContains, ImgUtilsDedup, ImgUtilsScoreThreshold,
+    ImgUtilsBoolLogic, ImgUtilsJSONFilter,
 ]
-
-NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS = register_nodes(__name__, NODES)

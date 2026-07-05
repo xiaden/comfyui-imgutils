@@ -1,15 +1,14 @@
 """imgutils_nodes tagging sub-package — taggers and tag-string processing."""
 
-from .._shared import register_nodes
+from .node_wd14 import ImgUtilsWD14
+from .node_deepdanbooru import ImgUtilsDeepDanbooru
+from .node_deepgelbooru import ImgUtilsDeepGelbooru
+from .node_mldanbooru import ImgUtilsMLDanbooru
+from .node_camie import ImgUtilsCamie
+from .node_pixai import ImgUtilsPixAI
+from .node_tags import ImgUtilsTags
 
-NODES: list[tuple[str, str, str]] = [
-    ("node_wd14", "ImgUtilsWD14", "Imgutils WD14 Tagger"),
-    ("node_deepdanbooru", "ImgUtilsDeepDanbooru", "Imgutils DeepDanbooru Tagger"),
-    ("node_deepgelbooru", "ImgUtilsDeepGelbooru", "Imgutils DeepGelbooru Tagger"),
-    ("node_mldanbooru", "ImgUtilsMLDanbooru", "Imgutils MLDanbooru Tagger"),
-    ("node_camie", "ImgUtilsCamie", "Imgutils Camie Tagger"),
-    ("node_pixai", "ImgUtilsPixAI", "Imgutils PixAI Tagger"),
-    ("node_tags", "ImgUtilsTags", "Imgutils Tags"),
+NODE_CLASSES = [
+    ImgUtilsWD14, ImgUtilsDeepDanbooru, ImgUtilsDeepGelbooru,
+    ImgUtilsMLDanbooru, ImgUtilsCamie, ImgUtilsPixAI, ImgUtilsTags,
 ]
-
-NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS = register_nodes(__name__, NODES)

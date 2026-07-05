@@ -1,11 +1,7 @@
 """imgutils_nodes edge detection sub-package — Canny, Lineart, and Anime Lineart."""
 
-from .._shared import register_nodes
+from .node_canny import ImgUtilsCanny
+from .node_lineart import ImgUtilsLineart
+from .node_lineart_anime import ImgUtilsLineartAnime
 
-NODES: list[tuple[str, str, str]] = [
-    ("node_canny", "ImgUtilsCanny", "Imgutils Edge (Canny)"),
-    ("node_lineart", "ImgUtilsLineart", "Imgutils Edge (Lineart)"),
-    ("node_lineart_anime", "ImgUtilsLineartAnime", "Imgutils Edge (Lineart Anime)"),
-]
-
-NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS = register_nodes(__name__, NODES)
+NODE_CLASSES = [ImgUtilsCanny, ImgUtilsLineart, ImgUtilsLineartAnime]
