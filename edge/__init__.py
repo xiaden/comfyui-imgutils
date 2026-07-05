@@ -1,26 +1,11 @@
-"""imgutils_nodes edge detection sub-package."""
-from __future__ import annotations
+"""imgutils_nodes edge detection sub-package — Canny, Lineart, and Anime Lineart."""
 
-NODE_CLASS_MAPPINGS = {}
-NODE_DISPLAY_NAME_MAPPINGS = {}
+from .._shared import register_nodes
 
-try:
-    from .node_canny import ImgUtilsCanny
-    NODE_CLASS_MAPPINGS["ImgUtilsCanny"] = ImgUtilsCanny
-    NODE_DISPLAY_NAME_MAPPINGS["ImgUtilsCanny"] = "Imgutils Edge (Canny)"
-except Exception:
-    import logging; logging.getLogger(__name__).warning("ImgUtilsCanny unavailable", exc_info=True)
+NODES: list[tuple[str, str, str]] = [
+    ("node_canny", "ImgUtilsCanny", "Imgutils Edge (Canny)"),
+    ("node_lineart", "ImgUtilsLineart", "Imgutils Edge (Lineart)"),
+    ("node_lineart_anime", "ImgUtilsLineartAnime", "Imgutils Edge (Lineart Anime)"),
+]
 
-try:
-    from .node_lineart import ImgUtilsLineart
-    NODE_CLASS_MAPPINGS["ImgUtilsLineart"] = ImgUtilsLineart
-    NODE_DISPLAY_NAME_MAPPINGS["ImgUtilsLineart"] = "Imgutils Edge (Lineart)"
-except Exception:
-    import logging; logging.getLogger(__name__).warning("ImgUtilsLineart unavailable", exc_info=True)
-
-try:
-    from .node_lineart_anime import ImgUtilsLineartAnime
-    NODE_CLASS_MAPPINGS["ImgUtilsLineartAnime"] = ImgUtilsLineartAnime
-    NODE_DISPLAY_NAME_MAPPINGS["ImgUtilsLineartAnime"] = "Imgutils Edge (Lineart Anime)"
-except Exception:
-    import logging; logging.getLogger(__name__).warning("ImgUtilsLineartAnime unavailable", exc_info=True)
+NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS = register_nodes(__name__, NODES)

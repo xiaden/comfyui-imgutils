@@ -1,9 +1,11 @@
-"""Node: ImgUtilsAdversarial — Adversarial noise removal."""
-from __future__ import annotations
-from comfy_api.latest import io
-from ..utils import comfy_to_pil, pil_to_comfy
+"""Adversarial noise removal using bilateral and guided filtering (no ML model)."""
 
-class ImgUtilsAdversarial(io.ComfyNode):
+from comfy_api.latest import io
+
+from .._shared.bases import _ImageToImage
+
+
+class ImgUtilsAdversarial(_ImageToImage):
     @classmethod
     def define_schema(cls) -> io.Schema:
         return io.Schema(
@@ -12,7 +14,7 @@ class ImgUtilsAdversarial(io.ComfyNode):
             description="Remove adversarial noise using bilateral + guided filtering. No ML model needed.",
             search_aliases=["restore", "adversarial", "denoise", "noise", "clean", "mist"],
             inputs=[
-                io.Image.Input("image", tooltip="Input image with adversarial noise"),
+                io.Image.Input("image", tooltip="Input image to remove adversarial noise from."),
             ],
             outputs=[io.Image.Output(display_name="image")],
         )
@@ -20,6 +22,4 @@ class ImgUtilsAdversarial(io.ComfyNode):
     @classmethod
     def execute(cls, image) -> io.NodeOutput:
         from imgutils.restore import remove_adversarial_noise
-        pil = comfy_to_pil(image.numpy() if hasattr(image, "numpy") else image)
-        result = remove_adversarial_noise(pil)
-        return io.NodeOutput(pil_to_comfy(result))
+        return cls._run(image, remove_adversarial_noise)

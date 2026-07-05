@@ -1,0 +1,220 @@
+{
+  "revision": 0,
+  "last_node_id": 10,
+  "last_link_id": 0,
+  "nodes": [
+    {
+      "id": 10,
+      "type": "599a4f21-233a-4f8f-b9ff-813e42ac2e74",
+      "pos": [
+        0,
+        0
+      ],
+      "size": [
+        315,
+        82
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "IMAGE",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "MASK",
+          "name": "MASK",
+          "type": "MASK",
+          "links": []
+        },
+        {
+          "localized_name": "CUTOUT",
+          "name": "CUTOUT",
+          "type": "IMAGE",
+          "links": []
+        }
+      ],
+      "properties": {
+        "proxyWidgets": [
+          [
+            "1",
+            "scale"
+          ]
+        ]
+      },
+      "widgets_values": [],
+      "title": "Character Segment"
+    }
+  ],
+  "links": [],
+  "version": 0.4,
+  "definitions": {
+    "subgraphs": [
+      {
+        "id": "599a4f21-233a-4f8f-b9ff-813e42ac2e74",
+        "version": 1,
+        "state": {
+          "lastGroupId": 0,
+          "lastNodeId": 1,
+          "lastLinkId": 102,
+          "lastRerouteId": 0
+        },
+        "revision": 0,
+        "config": {},
+        "name": "Character Segmentation",
+        "description": "Segments character(s) from the background using isnetis. Outputs both the alpha mask and the cutout image.",
+        "inputNode": {
+          "id": -10,
+          "bounding": [
+            -720,
+            -220,
+            140,
+            60
+          ]
+        },
+        "outputNode": {
+          "id": -20,
+          "bounding": [
+            560,
+            -220,
+            130,
+            60
+          ]
+        },
+        "inputs": [
+          {
+            "id": "eb65eb00-50d9-4a21-b525-bede2042bc32",
+            "name": "image",
+            "type": "IMAGE",
+            "linkIds": [
+              100
+            ],
+            "localized_name": "image",
+            "pos": [
+              -640,
+              -200
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "id": "4ac410e1-e65d-437c-9c14-b1a51fda2f0e",
+            "name": "mask",
+            "type": "MASK",
+            "linkIds": [
+              101
+            ],
+            "localized_name": "mask",
+            "pos": [
+              640,
+              -200
+            ]
+          },
+          {
+            "id": "a311adee-23de-4efe-9465-ccfae757a751",
+            "name": "cutout",
+            "type": "IMAGE",
+            "linkIds": [
+              102
+            ],
+            "localized_name": "cutout",
+            "pos": [
+              640,
+              -180
+            ]
+          }
+        ],
+        "widgets": [],
+        "nodes": [
+          {
+            "id": 1,
+            "type": "ImgUtilsSegment",
+            "pos": [
+              -300,
+              -220
+            ],
+            "size": [
+              315,
+              98
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "image",
+                "name": "image",
+                "type": "IMAGE",
+                "link": 100
+              },
+              {
+                "localized_name": "scale",
+                "name": "scale",
+                "type": "INT",
+                "widget": {
+                  "name": "scale"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "mask",
+                "name": "mask",
+                "type": "MASK",
+                "links": []
+              },
+              {
+                "localized_name": "image",
+                "name": "image",
+                "type": "IMAGE",
+                "links": []
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ImgUtilsSegment"
+            },
+            "widgets_values": [
+              1024
+            ]
+          }
+        ],
+        "groups": [],
+        "links": [
+          {
+            "id": 100,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 1,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 101,
+            "origin_id": 1,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 0,
+            "type": "MASK"
+          },
+          {
+            "id": 102,
+            "origin_id": 1,
+            "origin_slot": 1,
+            "target_id": -20,
+            "target_slot": 1,
+            "type": "IMAGE"
+          }
+        ],
+        "extra": {},
+        "category": "imgutils/Segment"
+      }
+    ]
+  },
+  "extra": {}
+}

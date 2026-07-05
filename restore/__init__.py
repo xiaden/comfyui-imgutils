@@ -1,26 +1,11 @@
-"""imgutils_nodes restore sub-package."""
-from __future__ import annotations
+"""imgutils_nodes restore sub-package — SCUNet, NAFNet, and adversarial noise removal."""
 
-NODE_CLASS_MAPPINGS = {}
-NODE_DISPLAY_NAME_MAPPINGS = {}
+from .._shared import register_nodes
 
-try:
-    from .node_scunet import ImgUtilsSCUNet
-    NODE_CLASS_MAPPINGS["ImgUtilsSCUNet"] = ImgUtilsSCUNet
-    NODE_DISPLAY_NAME_MAPPINGS["ImgUtilsSCUNet"] = "Imgutils Restore (SCUNet)"
-except Exception:
-    import logging; logging.getLogger(__name__).warning("ImgUtilsSCUNet unavailable", exc_info=True)
+NODES: list[tuple[str, str, str]] = [
+    ("node_scunet", "ImgUtilsSCUNet", "Imgutils Restore (SCUNet)"),
+    ("node_nafnet", "ImgUtilsNAFNet", "Imgutils Restore (NAFNet)"),
+    ("node_adversarial", "ImgUtilsAdversarial", "Imgutils Restore (Adversarial)"),
+]
 
-try:
-    from .node_nafnet import ImgUtilsNAFNet
-    NODE_CLASS_MAPPINGS["ImgUtilsNAFNet"] = ImgUtilsNAFNet
-    NODE_DISPLAY_NAME_MAPPINGS["ImgUtilsNAFNet"] = "Imgutils Restore (NAFNet)"
-except Exception:
-    import logging; logging.getLogger(__name__).warning("ImgUtilsNAFNet unavailable", exc_info=True)
-
-try:
-    from .node_adversarial import ImgUtilsAdversarial
-    NODE_CLASS_MAPPINGS["ImgUtilsAdversarial"] = ImgUtilsAdversarial
-    NODE_DISPLAY_NAME_MAPPINGS["ImgUtilsAdversarial"] = "Imgutils Restore (Adversarial)"
-except Exception:
-    import logging; logging.getLogger(__name__).warning("ImgUtilsAdversarial unavailable", exc_info=True)
+NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS = register_nodes(__name__, NODES)

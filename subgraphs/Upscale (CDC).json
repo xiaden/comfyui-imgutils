@@ -1,0 +1,187 @@
+{
+  "revision": 0,
+  "last_node_id": 10,
+  "last_link_id": 0,
+  "nodes": [
+    {
+      "id": 10,
+      "type": "8eb2801d-48be-4a85-85ab-3e9fa31d761c",
+      "pos": [
+        0,
+        0
+      ],
+      "size": [
+        315,
+        82
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "IMAGE",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "UPSCALED",
+          "name": "UPSCALED",
+          "type": "IMAGE",
+          "links": []
+        }
+      ],
+      "properties": {
+        "proxyWidgets": [
+          [
+            "1",
+            "tile_size"
+          ]
+        ]
+      },
+      "widgets_values": [],
+      "title": "Upscale (CDC)"
+    }
+  ],
+  "links": [],
+  "version": 0.4,
+  "definitions": {
+    "subgraphs": [
+      {
+        "id": "8eb2801d-48be-4a85-85ab-3e9fa31d761c",
+        "version": 1,
+        "state": {
+          "lastGroupId": 0,
+          "lastNodeId": 1,
+          "lastLinkId": 101,
+          "lastRerouteId": 0
+        },
+        "revision": 0,
+        "config": {},
+        "name": "Upscale (CDC)",
+        "description": "High-quality anime image upscaling using CDC. Preserves fine details and linework. Adjust tile_size for GPU memory.",
+        "inputNode": {
+          "id": -10,
+          "bounding": [
+            -720,
+            -220,
+            140,
+            60
+          ]
+        },
+        "outputNode": {
+          "id": -20,
+          "bounding": [
+            560,
+            -220,
+            130,
+            60
+          ]
+        },
+        "inputs": [
+          {
+            "id": "08f02e78-04f1-40fb-ab89-00625f8feca0",
+            "name": "image",
+            "type": "IMAGE",
+            "linkIds": [
+              100
+            ],
+            "localized_name": "image",
+            "pos": [
+              -640,
+              -200
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "id": "8eef3488-3f76-42c4-8080-62d607826045",
+            "name": "upscaled",
+            "type": "IMAGE",
+            "linkIds": [
+              101
+            ],
+            "localized_name": "upscaled",
+            "pos": [
+              640,
+              -200
+            ]
+          }
+        ],
+        "widgets": [],
+        "nodes": [
+          {
+            "id": 1,
+            "type": "ImgUtilsCDC",
+            "pos": [
+              -300,
+              -220
+            ],
+            "size": [
+              315,
+              98
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "image",
+                "name": "image",
+                "type": "IMAGE",
+                "link": 100
+              },
+              {
+                "localized_name": "tile_size",
+                "name": "tile_size",
+                "type": "INT",
+                "widget": {
+                  "name": "tile_size"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "image",
+                "name": "image",
+                "type": "IMAGE",
+                "links": []
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ImgUtilsCDC"
+            },
+            "widgets_values": [
+              512
+            ]
+          }
+        ],
+        "groups": [],
+        "links": [
+          {
+            "id": 100,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 1,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 101,
+            "origin_id": 1,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 0,
+            "type": "IMAGE"
+          }
+        ],
+        "extra": {},
+        "category": "imgutils/Transform"
+      }
+    ]
+  },
+  "extra": {}
+}

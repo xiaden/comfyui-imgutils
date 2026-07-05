@@ -1,22 +1,22 @@
-"""
-Node: ImgUtilsCamie — Camie tagger.
-
-Tags images using the Camie model with a threshold-preset mode.
-Returns rating tags, general tags, and character tags.
-"""
-
-from __future__ import annotations
+"""Camie tagger (70,000+ tags) — rating, general, and character tags with threshold-preset mode."""
 
 from comfy_api.latest import io
 
-from ..utils import comfy_to_pil
-from .node_wd14 import _join_names, _format_sections
+from ._base import _SectionedTagger
 
 
-class ImgUtilsCamie(io.ComfyNode):
-    """Camie tagger — mode-based thresholds for 70,000+ tags."""
+class ImgUtilsCamie(_SectionedTagger):
+    """Camie tagger — 70,000+ tags, mode-based threshold presets."""
 
-    MODES = ["balanced", "high_precision", "high_recall", "micro_opt", "macro_opt"]
+    MODES = ["Balanced", "High Precision", "High Recall", "Micro Optimized", "Macro Optimized"]
+
+    _MODE_API = {
+        "Balanced": "balanced",
+        "High Precision": "high_precision",
+        "High Recall": "high_recall",
+        "Micro Optimized": "micro_opt",
+        "Macro Optimized": "macro_opt",
+    }
 
     @classmethod
     def define_schema(cls) -> io.Schema:
@@ -32,10 +32,10 @@ class ImgUtilsCamie(io.ComfyNode):
                 "camie", "tagging", "70k", "caption", "describe",
             ],
             inputs=[
-                io.Image.Input("image", tooltip="Input image to tag"),
+                io.Image.Input("image", tooltip="Input image to tag."),
                 io.Combo.Input(
-                    "mode", options=cls.MODES, default="balanced",
-                    tooltip="Threshold preset: balanced, high_precision, high_recall, micro_opt, or macro_opt.",
+                    "mode", options=cls.MODES, default="Balanced",
+                    tooltip="Threshold preset for tag selection.",
                 ),
                 io.Boolean.Input(
                     "drop_overlap", default=False,
@@ -44,7 +44,7 @@ class ImgUtilsCamie(io.ComfyNode):
             ],
             outputs=[
                 io.String.Output(display_name="tags"),
-                io.String.Output(display_name="scores"),
+                io.String.Output(display_name="json"),
             ],
         )
 
@@ -52,15 +52,6 @@ class ImgUtilsCamie(io.ComfyNode):
     def execute(cls, image, mode, drop_overlap=False) -> io.NodeOutput:
         from imgutils.tagging import get_camie_tags
 
-        pil_image = comfy_to_pil(image.numpy() if hasattr(image, "numpy") else image)
-        rating, general, character = get_camie_tags(
-            pil_image,
-            mode=str(mode),
-            drop_overlap=bool(drop_overlap),
-        )
-
-        tag_names = _join_names(rating, general, character)
-        tag_scores = _format_sections(
-            ("Rating", rating), ("General Tags", general), ("Characters", character),
-        )
-        return io.NodeOutput(tag_names, tag_scores)
+        return cls._run(image, get_camie_tags,
+                        mode=cls._MODE_API.get(mode, mode),
+                        drop_overlap=drop_overlap)

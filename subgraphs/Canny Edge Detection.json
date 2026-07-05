@@ -1,0 +1,201 @@
+{
+  "revision": 0,
+  "last_node_id": 10,
+  "last_link_id": 0,
+  "nodes": [
+    {
+      "id": 10,
+      "type": "bce43c33-235e-466d-9432-dfcfcb5ec6b3",
+      "pos": [
+        0,
+        0
+      ],
+      "size": [
+        315,
+        82
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "IMAGE",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "EDGE",
+          "name": "EDGE",
+          "type": "IMAGE",
+          "links": []
+        }
+      ],
+      "properties": {
+        "proxyWidgets": [
+          [
+            "1",
+            "low_threshold"
+          ],
+          [
+            "1",
+            "high_threshold"
+          ]
+        ]
+      },
+      "widgets_values": [],
+      "title": "Canny Edge"
+    }
+  ],
+  "links": [],
+  "version": 0.4,
+  "definitions": {
+    "subgraphs": [
+      {
+        "id": "bce43c33-235e-466d-9432-dfcfcb5ec6b3",
+        "version": 1,
+        "state": {
+          "lastGroupId": 0,
+          "lastNodeId": 1,
+          "lastLinkId": 101,
+          "lastRerouteId": 0
+        },
+        "revision": 0,
+        "config": {},
+        "name": "Canny Edge Detection",
+        "description": "Detects edges using Canny edge detection. Useful for ControlNet conditioning or image analysis.",
+        "inputNode": {
+          "id": -10,
+          "bounding": [
+            -720,
+            -220,
+            140,
+            60
+          ]
+        },
+        "outputNode": {
+          "id": -20,
+          "bounding": [
+            560,
+            -220,
+            130,
+            60
+          ]
+        },
+        "inputs": [
+          {
+            "id": "4f2caede-65d2-480b-9561-3a7685c4d971",
+            "name": "image",
+            "type": "IMAGE",
+            "linkIds": [
+              100
+            ],
+            "localized_name": "image",
+            "pos": [
+              -640,
+              -200
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "id": "a58c402a-475e-4ffd-8825-390e977bba4f",
+            "name": "edge",
+            "type": "IMAGE",
+            "linkIds": [
+              101
+            ],
+            "localized_name": "edge",
+            "pos": [
+              640,
+              -200
+            ]
+          }
+        ],
+        "widgets": [],
+        "nodes": [
+          {
+            "id": 1,
+            "type": "ImgUtilsCanny",
+            "pos": [
+              -300,
+              -220
+            ],
+            "size": [
+              315,
+              110
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "image",
+                "name": "image",
+                "type": "IMAGE",
+                "link": 100
+              },
+              {
+                "localized_name": "low_threshold",
+                "name": "low_threshold",
+                "type": "INT",
+                "widget": {
+                  "name": "low_threshold"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "high_threshold",
+                "name": "high_threshold",
+                "type": "INT",
+                "widget": {
+                  "name": "high_threshold"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "image",
+                "name": "image",
+                "type": "IMAGE",
+                "links": []
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ImgUtilsCanny"
+            },
+            "widgets_values": [
+              100,
+              200
+            ]
+          }
+        ],
+        "groups": [],
+        "links": [
+          {
+            "id": 100,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 1,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 101,
+            "origin_id": 1,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 0,
+            "type": "IMAGE"
+          }
+        ],
+        "extra": {},
+        "category": "imgutils/Edge"
+      }
+    ]
+  },
+  "extra": {}
+}

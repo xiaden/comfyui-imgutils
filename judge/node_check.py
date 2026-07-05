@@ -1,11 +1,14 @@
-"""Node: ImgUtilsCheck — Boolean image property checks."""
-from __future__ import annotations
-import os, tempfile
+"""Boolean image property checks — AI-created, monochrome, greyscale, truncation, completeness."""
+
+import json
+import os
+import tempfile
+
 from comfy_api.latest import io
-from ..utils import comfy_to_pil
+from .._shared.tensor import comfy_to_pil
 
 class ImgUtilsCheck(io.ComfyNode):
-    OPS = ["is_ai_created", "is_monochrome", "is_greyscale", "is_truncated", "anime_completeness"]
+    OPS = ["Is AI Created", "Is Monochrome", "Is Greyscale", "Is Truncated", "Anime Completeness"]
 
     @classmethod
     def define_schema(cls) -> io.Schema:
@@ -15,30 +18,52 @@ class ImgUtilsCheck(io.ComfyNode):
             description="Boolean checks — AI-created detection, monochrome, greyscale, truncation, completeness.",
             search_aliases=["check", "boolean", "ai", "monochrome", "greyscale", "truncated", "completeness"],
             inputs=[
-                io.Image.Input("image", tooltip="Input image"),
-                io.Combo.Input("operation", options=cls.OPS, default="is_ai_created", tooltip="Check type."),
+                io.Image.Input("image", tooltip="Input image to analyze."),
+                io.Combo.Input("mode", options=cls.OPS, default="Is AI Created", tooltip="What to check — AI-created detection, monochrome, greyscale, truncation, or completeness."),
             ],
-            outputs=[io.String.Output(display_name="result"), io.String.Output(display_name="detail")],
+            outputs=[
+                io.String.Output(display_name="label"),
+                io.Boolean.Output(display_name="boolean"),
+                io.String.Output(display_name="json"),
+            ],
         )
 
     @classmethod
-    def execute(cls, image, operation) -> io.NodeOutput:
+    def execute(cls, image, mode) -> io.NodeOutput:
         from imgutils.validate import is_ai_created, is_monochrome, is_greyscale, is_truncated_file, anime_completeness
 
-        pil = comfy_to_pil(image.numpy() if hasattr(image, "numpy") else image)
+        pil = comfy_to_pil(image)
 
-        if operation == "is_truncated":
+        if mode == "Is Truncated":
             with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
-                pil.save(tmp, format="PNG"); tmp_path = tmp.name
+                pil.save(tmp, format="PNG")
+            tmp_path = tmp.name
             try:
                 result = is_truncated_file(tmp_path)
             finally:
                 os.unlink(tmp_path)
         else:
             funcs = {
-                "is_ai_created": is_ai_created, "is_monochrome": is_monochrome,
-                "is_greyscale": is_greyscale, "anime_completeness": anime_completeness,
+                "Is AI Created": is_ai_created,
+                "Is Monochrome": is_monochrome,
+                "Is Greyscale": is_greyscale,
+                "Anime Completeness": anime_completeness,
             }
-            result = funcs[operation](pil)
+            result = funcs[mode](pil)
 
-        return io.NodeOutput("true" if result else "false", str(result))
+        label = _check_label(mode, result)
+        return io.NodeOutput(label, result, json.dumps({"result": result, "mode": mode}))
+
+
+_CHECK_LABELS = {
+    "Is AI Created": ("AI Created", "Not AI Created"),
+    "Is Monochrome": ("Monochrome", "Not Monochrome"),
+    "Is Greyscale": ("Greyscale", "Not Greyscale"),
+    "Is Truncated": ("Truncated", "Not Truncated"),
+    "Anime Completeness": ("Complete", "Incomplete"),
+}
+
+
+def _check_label(mode: str, result: bool) -> str:
+    labels = _CHECK_LABELS.get(mode, ("true", "false"))
+    return labels[0] if result else labels[1]

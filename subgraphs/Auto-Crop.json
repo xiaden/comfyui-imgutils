@@ -1,0 +1,201 @@
+{
+  "revision": 0,
+  "last_node_id": 10,
+  "last_link_id": 0,
+  "nodes": [
+    {
+      "id": 10,
+      "type": "2fcf23c3-9d3d-48f0-89ea-2c97b74987c9",
+      "pos": [
+        0,
+        0
+      ],
+      "size": [
+        315,
+        82
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "IMAGE",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "CROPPED",
+          "name": "CROPPED",
+          "type": "IMAGE",
+          "links": []
+        }
+      ],
+      "properties": {
+        "proxyWidgets": [
+          [
+            "1",
+            "threshold"
+          ],
+          [
+            "1",
+            "median_filter"
+          ]
+        ]
+      },
+      "widgets_values": [],
+      "title": "Auto-Crop"
+    }
+  ],
+  "links": [],
+  "version": 0.4,
+  "definitions": {
+    "subgraphs": [
+      {
+        "id": "2fcf23c3-9d3d-48f0-89ea-2c97b74987c9",
+        "version": 1,
+        "state": {
+          "lastGroupId": 0,
+          "lastNodeId": 1,
+          "lastLinkId": 101,
+          "lastRerouteId": 0
+        },
+        "revision": 0,
+        "config": {},
+        "name": "Auto-Crop",
+        "description": "Automatically crops an image to its visible content by thresholding. Useful for removing empty borders from renders.",
+        "inputNode": {
+          "id": -10,
+          "bounding": [
+            -720,
+            -220,
+            140,
+            60
+          ]
+        },
+        "outputNode": {
+          "id": -20,
+          "bounding": [
+            560,
+            -220,
+            130,
+            60
+          ]
+        },
+        "inputs": [
+          {
+            "id": "8af47afb-d705-4e16-91f1-c1607b83e30e",
+            "name": "image",
+            "type": "IMAGE",
+            "linkIds": [
+              100
+            ],
+            "localized_name": "image",
+            "pos": [
+              -640,
+              -200
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "id": "9a88b4cb-dd53-4da6-9e2a-ef9713490b25",
+            "name": "cropped",
+            "type": "IMAGE",
+            "linkIds": [
+              101
+            ],
+            "localized_name": "cropped",
+            "pos": [
+              640,
+              -200
+            ]
+          }
+        ],
+        "widgets": [],
+        "nodes": [
+          {
+            "id": 1,
+            "type": "ImgUtilsSqueeze",
+            "pos": [
+              -300,
+              -220
+            ],
+            "size": [
+              315,
+              110
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "image",
+                "name": "image",
+                "type": "IMAGE",
+                "link": 100
+              },
+              {
+                "localized_name": "threshold",
+                "name": "threshold",
+                "type": "FLOAT",
+                "widget": {
+                  "name": "threshold"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "median_filter",
+                "name": "median_filter",
+                "type": "INT",
+                "widget": {
+                  "name": "median_filter"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "image",
+                "name": "image",
+                "type": "IMAGE",
+                "links": []
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ImgUtilsSqueeze"
+            },
+            "widgets_values": [
+              0.7,
+              5
+            ]
+          }
+        ],
+        "groups": [],
+        "links": [
+          {
+            "id": 100,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 1,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 101,
+            "origin_id": 1,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 0,
+            "type": "IMAGE"
+          }
+        ],
+        "extra": {},
+        "category": "imgutils/Transform"
+      }
+    ]
+  },
+  "extra": {}
+}

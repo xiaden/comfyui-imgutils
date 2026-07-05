@@ -1,0 +1,243 @@
+{
+  "revision": 0,
+  "last_node_id": 10,
+  "last_link_id": 0,
+  "nodes": [
+    {
+      "id": 10,
+      "type": "3fc80f2b-686e-4e86-90c7-192ca68c0ba3",
+      "pos": [
+        0,
+        0
+      ],
+      "size": [
+        315,
+        82
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "IMAGE",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "CENSORED",
+          "name": "CENSORED",
+          "type": "IMAGE",
+          "links": []
+        }
+      ],
+      "properties": {
+        "proxyWidgets": [
+          [
+            "1",
+            "mode"
+          ],
+          [
+            "1",
+            "nipple_f"
+          ],
+          [
+            "1",
+            "penis"
+          ],
+          [
+            "1",
+            "pussy"
+          ],
+          [
+            "1",
+            "confidence"
+          ]
+        ]
+      },
+      "widgets_values": [],
+      "title": "Content Censor"
+    }
+  ],
+  "links": [],
+  "version": 0.4,
+  "definitions": {
+    "subgraphs": [
+      {
+        "id": "3fc80f2b-686e-4e86-90c7-192ca68c0ba3",
+        "version": 1,
+        "state": {
+          "lastGroupId": 0,
+          "lastNodeId": 1,
+          "lastLinkId": 101,
+          "lastRerouteId": 0
+        },
+        "revision": 0,
+        "config": {},
+        "name": "Content Censor",
+        "description": "Detects and censors NSFW regions using pixelation, blur, or color fill. Toggle body part filters and adjust confidence threshold.",
+        "inputNode": {
+          "id": -10,
+          "bounding": [
+            -720,
+            -220,
+            140,
+            60
+          ]
+        },
+        "outputNode": {
+          "id": -20,
+          "bounding": [
+            560,
+            -220,
+            130,
+            60
+          ]
+        },
+        "inputs": [
+          {
+            "id": "e2a3984b-a0cf-4e1d-a391-a0510fbd9561",
+            "name": "image",
+            "type": "IMAGE",
+            "linkIds": [
+              100
+            ],
+            "localized_name": "image",
+            "pos": [
+              -640,
+              -200
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "id": "1bf7d77a-bcd8-4c57-b57d-d4ce0c02a3d1",
+            "name": "censored",
+            "type": "IMAGE",
+            "linkIds": [
+              101
+            ],
+            "localized_name": "censored",
+            "pos": [
+              640,
+              -200
+            ]
+          }
+        ],
+        "widgets": [],
+        "nodes": [
+          {
+            "id": 1,
+            "type": "ImgUtilsCensor",
+            "pos": [
+              -300,
+              -300
+            ],
+            "size": [
+              315,
+              150
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "image",
+                "name": "image",
+                "type": "IMAGE",
+                "link": 100
+              },
+              {
+                "localized_name": "mode",
+                "name": "mode",
+                "type": "COMBO",
+                "widget": {
+                  "name": "mode"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "nipple_f",
+                "name": "nipple_f",
+                "type": "BOOLEAN",
+                "widget": {
+                  "name": "nipple_f"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "penis",
+                "name": "penis",
+                "type": "BOOLEAN",
+                "widget": {
+                  "name": "penis"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "pussy",
+                "name": "pussy",
+                "type": "BOOLEAN",
+                "widget": {
+                  "name": "pussy"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "confidence",
+                "name": "confidence",
+                "type": "FLOAT",
+                "widget": {
+                  "name": "confidence"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "image",
+                "name": "image",
+                "type": "IMAGE",
+                "links": []
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ImgUtilsCensor"
+            },
+            "widgets_values": [
+              "Pixelate",
+              false,
+              false,
+              false,
+              0.3
+            ]
+          }
+        ],
+        "groups": [],
+        "links": [
+          {
+            "id": 100,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 1,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 101,
+            "origin_id": 1,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 0,
+            "type": "IMAGE"
+          }
+        ],
+        "extra": {},
+        "category": "imgutils/Transform"
+      }
+    ]
+  },
+  "extra": {}
+}

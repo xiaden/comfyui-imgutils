@@ -1,0 +1,266 @@
+{
+  "revision": 0,
+  "last_node_id": 10,
+  "last_link_id": 0,
+  "nodes": [
+    {
+      "id": 10,
+      "type": "60984316-0fbd-4221-b550-521cd2aba849",
+      "pos": [
+        0,
+        0
+      ],
+      "size": [
+        315,
+        82
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "IMAGE",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "FACES",
+          "name": "FACES",
+          "type": "IMAGE",
+          "links": []
+        }
+      ],
+      "properties": {
+        "proxyWidgets": [
+          [
+            "1",
+            "mode"
+          ],
+          [
+            "1",
+            "confidence"
+          ]
+        ]
+      },
+      "widgets_values": [],
+      "title": "Face Detect & Crop"
+    }
+  ],
+  "links": [],
+  "version": 0.4,
+  "definitions": {
+    "subgraphs": [
+      {
+        "id": "60984316-0fbd-4221-b550-521cd2aba849",
+        "version": 1,
+        "state": {
+          "lastGroupId": 0,
+          "lastNodeId": 2,
+          "lastLinkId": 103,
+          "lastRerouteId": 0
+        },
+        "revision": 0,
+        "config": {},
+        "name": "Face Detect & Crop",
+        "description": "Detects faces in an image and crops each face to individual image outputs. Use Bbox Crop to extract detected regions.",
+        "inputNode": {
+          "id": -10,
+          "bounding": [
+            -720,
+            -220,
+            140,
+            60
+          ]
+        },
+        "outputNode": {
+          "id": -20,
+          "bounding": [
+            560,
+            -220,
+            130,
+            60
+          ]
+        },
+        "inputs": [
+          {
+            "id": "2f02e8d9-a436-42a1-90e7-37dc3593a157",
+            "name": "image",
+            "type": "IMAGE",
+            "linkIds": [
+              100,
+              103
+            ],
+            "localized_name": "image",
+            "pos": [
+              -640,
+              -200
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "id": "1a874291-6f74-4785-b05f-39126ba330d3",
+            "name": "faces",
+            "type": "IMAGE",
+            "linkIds": [
+              102
+            ],
+            "localized_name": "faces",
+            "pos": [
+              640,
+              -200
+            ]
+          }
+        ],
+        "widgets": [],
+        "nodes": [
+          {
+            "id": 1,
+            "type": "ImgUtilsDetect",
+            "pos": [
+              -520,
+              -300
+            ],
+            "size": [
+              315,
+              126
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "image",
+                "name": "image",
+                "type": "IMAGE",
+                "link": 100
+              },
+              {
+                "localized_name": "mode",
+                "name": "mode",
+                "type": "COMBO",
+                "widget": {
+                  "name": "mode"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "confidence",
+                "name": "confidence",
+                "type": "FLOAT",
+                "widget": {
+                  "name": "confidence"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "detections",
+                "name": "detections",
+                "type": "STRING",
+                "links": []
+              },
+              {
+                "localized_name": "json",
+                "name": "json",
+                "type": "STRING",
+                "links": []
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ImgUtilsDetect"
+            },
+            "widgets_values": [
+              "Detect Faces",
+              0.5
+            ]
+          },
+          {
+            "id": 2,
+            "type": "ImgUtilsBboxCrop",
+            "pos": [
+              -200,
+              -300
+            ],
+            "size": [
+              315,
+              82
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "image",
+                "name": "image",
+                "type": "IMAGE",
+                "link": 103
+              },
+              {
+                "localized_name": "bboxes",
+                "name": "bboxes",
+                "type": "STRING",
+                "link": 101
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "images",
+                "name": "images",
+                "type": "IMAGE",
+                "is_output_list": true,
+                "links": []
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ImgUtilsBboxCrop"
+            },
+            "widgets_values": null
+          }
+        ],
+        "groups": [],
+        "links": [
+          {
+            "id": 100,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 1,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 101,
+            "origin_id": 1,
+            "origin_slot": 1,
+            "target_id": 2,
+            "target_slot": 1,
+            "type": "STRING"
+          },
+          {
+            "id": 102,
+            "origin_id": 2,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 103,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 2,
+            "target_slot": 0,
+            "type": "IMAGE"
+          }
+        ],
+        "extra": {},
+        "category": "imgutils/Detect"
+      }
+    ]
+  },
+  "extra": {}
+}

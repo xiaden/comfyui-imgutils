@@ -1,19 +1,10 @@
-"""imgutils_nodes compare sub-package."""
-from __future__ import annotations
+"""imgutils_nodes comparison sub-package — CCIP character similarity and LPIPS perceptual similarity."""
 
-NODE_CLASS_MAPPINGS = {}
-NODE_DISPLAY_NAME_MAPPINGS = {}
+from .._shared import register_nodes
 
-try:
-    from .node_ccip import ImgUtilsCCIP
-    NODE_CLASS_MAPPINGS["ImgUtilsCCIP"] = ImgUtilsCCIP
-    NODE_DISPLAY_NAME_MAPPINGS["ImgUtilsCCIP"] = "Imgutils Compare (CCIP)"
-except Exception:
-    import logging; logging.getLogger(__name__).warning("ImgUtilsCCIP unavailable", exc_info=True)
+NODES: list[tuple[str, str, str]] = [
+    ("node_ccip", "ImgUtilsCCIP", "Imgutils Compare (CCIP)"),
+    ("node_lpips", "ImgUtilsLPIPS", "Imgutils Compare (LPIPS)"),
+]
 
-try:
-    from .node_lpips import ImgUtilsLPIPS
-    NODE_CLASS_MAPPINGS["ImgUtilsLPIPS"] = ImgUtilsLPIPS
-    NODE_DISPLAY_NAME_MAPPINGS["ImgUtilsLPIPS"] = "Imgutils Compare (LPIPS)"
-except Exception:
-    import logging; logging.getLogger(__name__).warning("ImgUtilsLPIPS unavailable", exc_info=True)
+NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS = register_nodes(__name__, NODES)

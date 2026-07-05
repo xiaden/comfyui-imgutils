@@ -1,0 +1,253 @@
+{
+  "revision": 0,
+  "last_node_id": 10,
+  "last_link_id": 0,
+  "nodes": [
+    {
+      "id": 10,
+      "type": "a022b298-4404-4b84-9901-88e5fe10a739",
+      "pos": [
+        0,
+        0
+      ],
+      "size": [
+        315,
+        82
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "IMAGE",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "LABEL",
+          "name": "LABEL",
+          "type": "STRING",
+          "links": []
+        },
+        {
+          "localized_name": "SCORE",
+          "name": "SCORE",
+          "type": "FLOAT",
+          "links": []
+        },
+        {
+          "localized_name": "JSON",
+          "name": "JSON",
+          "type": "STRING",
+          "links": []
+        }
+      ],
+      "properties": {
+        "proxyWidgets": [
+          [
+            "1",
+            "mode"
+          ]
+        ]
+      },
+      "widgets_values": [],
+      "title": "Anime Classifier"
+    }
+  ],
+  "links": [],
+  "version": 0.4,
+  "definitions": {
+    "subgraphs": [
+      {
+        "id": "a022b298-4404-4b84-9901-88e5fe10a739",
+        "version": 1,
+        "state": {
+          "lastGroupId": 0,
+          "lastNodeId": 1,
+          "lastLinkId": 103,
+          "lastRerouteId": 0
+        },
+        "revision": 0,
+        "config": {},
+        "name": "Anime Classifier",
+        "description": "Classifies an anime image by genre/rating. Switch modes for specific classification tasks like style age, real vs anime, etc.",
+        "inputNode": {
+          "id": -10,
+          "bounding": [
+            -720,
+            -220,
+            140,
+            60
+          ]
+        },
+        "outputNode": {
+          "id": -20,
+          "bounding": [
+            560,
+            -220,
+            130,
+            60
+          ]
+        },
+        "inputs": [
+          {
+            "id": "e13c41b5-cb3e-4237-a68b-d29eeb956b86",
+            "name": "image",
+            "type": "IMAGE",
+            "linkIds": [
+              100
+            ],
+            "localized_name": "image",
+            "pos": [
+              -640,
+              -200
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "id": "ecab723e-7499-4458-802f-2958a481f9cd",
+            "name": "label",
+            "type": "STRING",
+            "linkIds": [
+              101
+            ],
+            "localized_name": "label",
+            "pos": [
+              640,
+              -200
+            ]
+          },
+          {
+            "id": "06bc16be-f4e7-4114-898a-3faa3dfa57c2",
+            "name": "score",
+            "type": "FLOAT",
+            "linkIds": [
+              102
+            ],
+            "localized_name": "score",
+            "pos": [
+              640,
+              -180
+            ]
+          },
+          {
+            "id": "30c0a17d-82c5-47a4-93e5-3bbbf18f473a",
+            "name": "json",
+            "type": "STRING",
+            "linkIds": [
+              103
+            ],
+            "localized_name": "json",
+            "pos": [
+              640,
+              -160
+            ]
+          }
+        ],
+        "widgets": [],
+        "nodes": [
+          {
+            "id": 1,
+            "type": "ImgUtilsClassify",
+            "pos": [
+              -300,
+              -220
+            ],
+            "size": [
+              315,
+              126
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "image",
+                "name": "image",
+                "type": "IMAGE",
+                "link": 100
+              },
+              {
+                "localized_name": "mode",
+                "name": "mode",
+                "type": "COMBO",
+                "widget": {
+                  "name": "mode"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "label",
+                "name": "label",
+                "type": "STRING",
+                "links": []
+              },
+              {
+                "localized_name": "score",
+                "name": "score",
+                "type": "FLOAT",
+                "links": []
+              },
+              {
+                "localized_name": "json",
+                "name": "json",
+                "type": "STRING",
+                "links": []
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ImgUtilsClassify"
+            },
+            "widgets_values": [
+              "Anime Classify"
+            ]
+          }
+        ],
+        "groups": [],
+        "links": [
+          {
+            "id": 100,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 1,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 101,
+            "origin_id": 1,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 0,
+            "type": "STRING"
+          },
+          {
+            "id": 102,
+            "origin_id": 1,
+            "origin_slot": 1,
+            "target_id": -20,
+            "target_slot": 1,
+            "type": "FLOAT"
+          },
+          {
+            "id": 103,
+            "origin_id": 1,
+            "origin_slot": 2,
+            "target_id": -20,
+            "target_slot": 2,
+            "type": "STRING"
+          }
+        ],
+        "extra": {},
+        "category": "imgutils/Judge"
+      }
+    ]
+  },
+  "extra": {}
+}

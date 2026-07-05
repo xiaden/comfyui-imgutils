@@ -1,9 +1,11 @@
-"""Node: ImgUtilsSCUNet — SCUNet image restoration."""
-from __future__ import annotations
-from comfy_api.latest import io
-from ..utils import comfy_to_pil, pil_to_comfy
+"""SCUNet image restoration/de-noising."""
 
-class ImgUtilsSCUNet(io.ComfyNode):
+from comfy_api.latest import io
+
+from .._shared.bases import _ImageToImage
+
+
+class ImgUtilsSCUNet(_ImageToImage):
     MODELS = ["GAN", "PSNR"]
 
     @classmethod
@@ -14,16 +16,14 @@ class ImgUtilsSCUNet(io.ComfyNode):
             description="Restore/de-noise images using SCUNet.",
             search_aliases=["restore", "scunet", "denoise", "clean", "enhance"],
             inputs=[
-                io.Image.Input("image", tooltip="Input image"),
-                io.Combo.Input("model", options=cls.MODELS, default="GAN", tooltip="SCUNet model: GAN or PSNR."),
+                io.Image.Input("image", tooltip="Input image to restore/denoise."),
+                io.Combo.Input("mode", options=cls.MODELS, default="GAN", tooltip="SCUNet model variant: GAN or PSNR."),
                 io.Int.Input("tile_size", default=128, min=64, max=512, step=64, tooltip="Processing tile size. Larger = more VRAM."),
             ],
             outputs=[io.Image.Output(display_name="image")],
         )
 
     @classmethod
-    def execute(cls, image, model, tile_size) -> io.NodeOutput:
+    def execute(cls, image, mode, tile_size) -> io.NodeOutput:
         from imgutils.restore import restore_with_scunet
-        pil = comfy_to_pil(image.numpy() if hasattr(image, "numpy") else image)
-        result = restore_with_scunet(pil, model=str(model), tile_size=int(tile_size))
-        return io.NodeOutput(pil_to_comfy(result))
+        return cls._run(image, restore_with_scunet, model=mode, tile_size=tile_size)

@@ -1,19 +1,14 @@
-"""
-Node: ImgUtilsPixAI — PixAI tagger.
+"""PixAI tagger — general and character tags with IP association data."""
 
-Tags images using PixAI models with configurable threshold.
-Returns general and character tags with IP association data.
-"""
-
-from __future__ import annotations
+import json
 
 from comfy_api.latest import io
 
-from ..utils import comfy_to_pil
+from .._shared.tensor import comfy_to_pil
 
 
 class ImgUtilsPixAI(io.ComfyNode):
-    """PixAI tagger — general and character tags with single threshold."""
+    """PixAI tagger — general and character tags with IP metadata, single threshold."""
 
     @classmethod
     def define_schema(cls) -> io.Schema:
@@ -29,30 +24,37 @@ class ImgUtilsPixAI(io.ComfyNode):
                 "pixai", "tagging", "ip", "caption", "describe",
             ],
             inputs=[
-                io.Image.Input("image", tooltip="Input image to tag"),
+                io.Image.Input("image", tooltip="Input image to tag."),
                 io.Float.Input(
                     "threshold", default=0.4, min=0.0, max=1.0, step=0.05,
                     tooltip="Confidence threshold applied to all tag categories.",
                 ),
+                io.Boolean.Input(
+                    "drop_overlap", default=False,
+                    tooltip="Remove overlapping/redundant tags.",
+                ),
             ],
             outputs=[
                 io.String.Output(display_name="tags"),
-                io.String.Output(display_name="scores"),
+                io.String.Output(display_name="json"),
             ],
         )
 
     @classmethod
-    def execute(cls, image, threshold) -> io.NodeOutput:
-        from imgutils.tagging import get_pixai_tags
+    def execute(cls, image, threshold, drop_overlap=False) -> io.NodeOutput:
+        from imgutils.tagging import get_pixai_tags, drop_overlap_tags as _drop_overlap_tags
 
-        pil_image = comfy_to_pil(image.numpy() if hasattr(image, "numpy") else image)
+        pil_image = comfy_to_pil(image)
         result = get_pixai_tags(
             pil_image,
-            thresholds=float(threshold),
+            thresholds=threshold,
             fmt="tag",
         )
 
-        sorted_items = sorted(result.items(), key=lambda x: x[1], reverse=True)  # type: ignore[arg-type]
+        if drop_overlap:
+            result = _drop_overlap_tags(result)
+
+        sorted_items = sorted(result.items(), key=lambda item: item[1], reverse=True)
         tag_names = ", ".join(k for k, v in sorted_items[:50])
-        tag_scores = "\n".join(f"  {k}: {v:.4f}" for k, v in sorted_items[:50])
-        return io.NodeOutput(tag_names, tag_scores)
+        json_str = json.dumps(result, ensure_ascii=False)
+        return io.NodeOutput(tag_names, json_str)

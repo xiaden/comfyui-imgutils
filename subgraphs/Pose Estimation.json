@@ -1,0 +1,234 @@
+{
+  "revision": 0,
+  "last_node_id": 10,
+  "last_link_id": 0,
+  "nodes": [
+    {
+      "id": 10,
+      "type": "18266f52-1701-4e05-bab1-5b679212e2ea",
+      "pos": [
+        0,
+        0
+      ],
+      "size": [
+        315,
+        82
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "IMAGE",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "SKELETON",
+          "name": "SKELETON",
+          "type": "IMAGE",
+          "links": []
+        },
+        {
+          "localized_name": "KEYPOINTS",
+          "name": "KEYPOINTS",
+          "type": "STRING",
+          "links": []
+        }
+      ],
+      "properties": {
+        "proxyWidgets": [
+          [
+            "1",
+            "mode"
+          ],
+          [
+            "1",
+            "auto_detect"
+          ]
+        ]
+      },
+      "widgets_values": [],
+      "title": "Pose Skeleton"
+    }
+  ],
+  "links": [],
+  "version": 0.4,
+  "definitions": {
+    "subgraphs": [
+      {
+        "id": "18266f52-1701-4e05-bab1-5b679212e2ea",
+        "version": 1,
+        "state": {
+          "lastGroupId": 0,
+          "lastNodeId": 1,
+          "lastLinkId": 102,
+          "lastRerouteId": 0
+        },
+        "revision": 0,
+        "config": {},
+        "name": "Pose Estimation",
+        "description": "Estimates body pose keypoints using DWPose and renders a skeleton overlay. Outputs the visualization and raw JSON keypoints.",
+        "inputNode": {
+          "id": -10,
+          "bounding": [
+            -720,
+            -220,
+            140,
+            60
+          ]
+        },
+        "outputNode": {
+          "id": -20,
+          "bounding": [
+            560,
+            -220,
+            130,
+            60
+          ]
+        },
+        "inputs": [
+          {
+            "id": "672b8ca4-4181-480d-be80-c31b936cbb1b",
+            "name": "image",
+            "type": "IMAGE",
+            "linkIds": [
+              100
+            ],
+            "localized_name": "image",
+            "pos": [
+              -640,
+              -200
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "id": "07593172-2372-43aa-8214-f789f140bb72",
+            "name": "skeleton",
+            "type": "IMAGE",
+            "linkIds": [
+              101
+            ],
+            "localized_name": "skeleton",
+            "pos": [
+              640,
+              -200
+            ]
+          },
+          {
+            "id": "0185cd1a-6a99-4b4e-8adf-d89313d536d6",
+            "name": "keypoints",
+            "type": "STRING",
+            "linkIds": [
+              102
+            ],
+            "localized_name": "keypoints",
+            "pos": [
+              640,
+              -180
+            ]
+          }
+        ],
+        "widgets": [],
+        "nodes": [
+          {
+            "id": 1,
+            "type": "ImgUtilsPose",
+            "pos": [
+              -300,
+              -220
+            ],
+            "size": [
+              315,
+              126
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "image",
+                "name": "image",
+                "type": "IMAGE",
+                "link": 100
+              },
+              {
+                "localized_name": "mode",
+                "name": "mode",
+                "type": "COMBO",
+                "widget": {
+                  "name": "mode"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "auto_detect",
+                "name": "auto_detect",
+                "type": "BOOLEAN",
+                "widget": {
+                  "name": "auto_detect"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "skeleton",
+                "name": "skeleton",
+                "type": "IMAGE",
+                "links": []
+              },
+              {
+                "localized_name": "json",
+                "name": "json",
+                "type": "STRING",
+                "links": []
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ImgUtilsPose"
+            },
+            "widgets_values": [
+              "Full",
+              true
+            ]
+          }
+        ],
+        "groups": [],
+        "links": [
+          {
+            "id": 100,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 1,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 101,
+            "origin_id": 1,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 102,
+            "origin_id": 1,
+            "origin_slot": 1,
+            "target_id": -20,
+            "target_slot": 1,
+            "type": "STRING"
+          }
+        ],
+        "extra": {},
+        "category": "imgutils/Pose"
+      }
+    ]
+  },
+  "extra": {}
+}

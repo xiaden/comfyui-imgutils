@@ -1,19 +1,12 @@
-"""
-Node: ImgUtilsDeepDanbooru — DeepDanbooru tagger.
-
-Tags images using the DeepDanbooru model with configurable thresholds.
-"""
-
-from __future__ import annotations
+"""DeepDanbooru tagger — rating, general, and character tags."""
 
 from comfy_api.latest import io
 
-from ..utils import comfy_to_pil
-from .node_wd14 import _join_names, _format_sections
+from ._base import _SectionedTagger
 
 
-class ImgUtilsDeepDanbooru(io.ComfyNode):
-    """DeepDanbooru tagger — general and character tags with confidence thresholds."""
+class ImgUtilsDeepDanbooru(_SectionedTagger):
+    """DeepDanbooru tagger — rating, general, and character tags with configurable thresholds."""
 
     @classmethod
     def define_schema(cls) -> io.Schema:
@@ -29,7 +22,7 @@ class ImgUtilsDeepDanbooru(io.ComfyNode):
                 "deepdanbooru", "tagging", "danbooru", "caption", "describe",
             ],
             inputs=[
-                io.Image.Input("image", tooltip="Input image to tag"),
+                io.Image.Input("image", tooltip="Input image to tag."),
                 io.Float.Input(
                     "general_threshold", default=0.5, min=0.0, max=1.0, step=0.05,
                     tooltip="Confidence threshold for general tags.",
@@ -45,7 +38,7 @@ class ImgUtilsDeepDanbooru(io.ComfyNode):
             ],
             outputs=[
                 io.String.Output(display_name="tags"),
-                io.String.Output(display_name="scores"),
+                io.String.Output(display_name="json"),
             ],
         )
 
@@ -53,16 +46,7 @@ class ImgUtilsDeepDanbooru(io.ComfyNode):
     def execute(cls, image, general_threshold, character_threshold, drop_overlap=False) -> io.NodeOutput:
         from imgutils.tagging import get_deepdanbooru_tags
 
-        pil_image = comfy_to_pil(image.numpy() if hasattr(image, "numpy") else image)
-        rating, general, character = get_deepdanbooru_tags(
-            pil_image,
-            general_threshold=float(general_threshold),
-            character_threshold=float(character_threshold),
-            drop_overlap=bool(drop_overlap),
-        )
-
-        tag_names = _join_names(rating, general, character)
-        tag_scores = _format_sections(
-            ("Rating", rating), ("General Tags", general), ("Characters", character),
-        )
-        return io.NodeOutput(tag_names, tag_scores)
+        return cls._run(image, get_deepdanbooru_tags,
+                        general_threshold=general_threshold,
+                        character_threshold=character_threshold,
+                        drop_overlap=drop_overlap)

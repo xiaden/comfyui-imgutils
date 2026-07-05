@@ -1,0 +1,234 @@
+{
+  "revision": 0,
+  "last_node_id": 10,
+  "last_link_id": 0,
+  "nodes": [
+    {
+      "id": 10,
+      "type": "a46566d7-ebb2-41bd-b958-4a44e507ba0d",
+      "pos": [
+        0,
+        0
+      ],
+      "size": [
+        315,
+        82
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "IMAGE",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "DETECTIONS",
+          "name": "DETECTIONS",
+          "type": "STRING",
+          "links": []
+        },
+        {
+          "localized_name": "JSON",
+          "name": "JSON",
+          "type": "STRING",
+          "links": []
+        }
+      ],
+      "properties": {
+        "proxyWidgets": [
+          [
+            "1",
+            "heat_threshold"
+          ],
+          [
+            "1",
+            "box_threshold"
+          ]
+        ]
+      },
+      "widgets_values": [],
+      "title": "OCR Text Detection"
+    }
+  ],
+  "links": [],
+  "version": 0.4,
+  "definitions": {
+    "subgraphs": [
+      {
+        "id": "a46566d7-ebb2-41bd-b958-4a44e507ba0d",
+        "version": 1,
+        "state": {
+          "lastGroupId": 0,
+          "lastNodeId": 1,
+          "lastLinkId": 102,
+          "lastRerouteId": 0
+        },
+        "revision": 0,
+        "config": {},
+        "name": "OCR Text Detection",
+        "description": "Extracts text from images using PaddleOCR. Outputs human-readable detection text and structured JSON with bounding boxes.",
+        "inputNode": {
+          "id": -10,
+          "bounding": [
+            -720,
+            -220,
+            140,
+            60
+          ]
+        },
+        "outputNode": {
+          "id": -20,
+          "bounding": [
+            560,
+            -220,
+            130,
+            60
+          ]
+        },
+        "inputs": [
+          {
+            "id": "1fddbdbf-8139-4c4b-9428-c70466cf8a69",
+            "name": "image",
+            "type": "IMAGE",
+            "linkIds": [
+              100
+            ],
+            "localized_name": "image",
+            "pos": [
+              -640,
+              -200
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "id": "3abdaeac-0c0a-499f-b20f-2f2be88d1662",
+            "name": "detections",
+            "type": "STRING",
+            "linkIds": [
+              101
+            ],
+            "localized_name": "detections",
+            "pos": [
+              640,
+              -200
+            ]
+          },
+          {
+            "id": "0e14af54-1024-479d-adef-fc1231e0a730",
+            "name": "json",
+            "type": "STRING",
+            "linkIds": [
+              102
+            ],
+            "localized_name": "json",
+            "pos": [
+              640,
+              -180
+            ]
+          }
+        ],
+        "widgets": [],
+        "nodes": [
+          {
+            "id": 1,
+            "type": "ImgUtilsOCR",
+            "pos": [
+              -300,
+              -220
+            ],
+            "size": [
+              315,
+              126
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "image",
+                "name": "image",
+                "type": "IMAGE",
+                "link": 100
+              },
+              {
+                "localized_name": "heat_threshold",
+                "name": "heat_threshold",
+                "type": "FLOAT",
+                "widget": {
+                  "name": "heat_threshold"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "box_threshold",
+                "name": "box_threshold",
+                "type": "FLOAT",
+                "widget": {
+                  "name": "box_threshold"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "detections",
+                "name": "detections",
+                "type": "STRING",
+                "links": []
+              },
+              {
+                "localized_name": "json",
+                "name": "json",
+                "type": "STRING",
+                "links": []
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ImgUtilsOCR"
+            },
+            "widgets_values": [
+              0.3,
+              0.7
+            ]
+          }
+        ],
+        "groups": [],
+        "links": [
+          {
+            "id": 100,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 1,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 101,
+            "origin_id": 1,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 0,
+            "type": "STRING"
+          },
+          {
+            "id": 102,
+            "origin_id": 1,
+            "origin_slot": 1,
+            "target_id": -20,
+            "target_slot": 1,
+            "type": "STRING"
+          }
+        ],
+        "extra": {},
+        "category": "imgutils/OCR"
+      }
+    ]
+  },
+  "extra": {}
+}

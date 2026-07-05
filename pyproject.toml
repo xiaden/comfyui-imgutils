@@ -1,10 +1,10 @@
 [project]
 name = "comfyui-imgutils"
 version = "0.1.0"
-description = "27 ComfyUI V2 nodes wrapping deepghs/imgutils — anime image tagging, classification, edge detection, restoration, upscaling, OCR, pose estimation, segmentation, and comparison."
+description = "ComfyUI V2 nodes wrapping deepghs/imgutils for anime image analysis and processing."
 readme = "README.md"
 authors = [
-    { name = "imgutils_nodes contributors" }
+    { name = "xiaden" }
 ]
 license = { file = "LICENSE" }
 dependencies = [
@@ -26,4 +26,4 @@ Repository = "https://github.com/xiaden/comfyui-imgutils"
 PublisherId = "imgutils"
 DisplayName = "ImgUtils Nodes"
 Icon = ""
-requires-comfyui = ">=0.3.0"
+requires-comfyui = ">=0.25.0"

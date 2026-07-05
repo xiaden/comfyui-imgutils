@@ -1,0 +1,226 @@
+{
+  "revision": 0,
+  "last_node_id": 10,
+  "last_link_id": 0,
+  "nodes": [
+    {
+      "id": 10,
+      "type": "806fe789-e479-42f2-8424-f27758422016",
+      "pos": [
+        0,
+        0
+      ],
+      "size": [
+        315,
+        82
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "IMAGE",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "LABEL",
+          "name": "LABEL",
+          "type": "STRING",
+          "links": []
+        },
+        {
+          "localized_name": "IS_AI",
+          "name": "IS_AI",
+          "type": "BOOLEAN",
+          "links": []
+        }
+      ],
+      "properties": {
+        "proxyWidgets": [
+          [
+            "1",
+            "mode"
+          ]
+        ]
+      },
+      "widgets_values": [],
+      "title": "AI Image Detector"
+    }
+  ],
+  "links": [],
+  "version": 0.4,
+  "definitions": {
+    "subgraphs": [
+      {
+        "id": "806fe789-e479-42f2-8424-f27758422016",
+        "version": 1,
+        "state": {
+          "lastGroupId": 0,
+          "lastNodeId": 1,
+          "lastLinkId": 102,
+          "lastRerouteId": 0
+        },
+        "revision": 0,
+        "config": {},
+        "name": "AI Image Detector",
+        "description": "Checks whether an image was AI-generated. Outputs the classification label and a boolean result.",
+        "inputNode": {
+          "id": -10,
+          "bounding": [
+            -720,
+            -220,
+            140,
+            60
+          ]
+        },
+        "outputNode": {
+          "id": -20,
+          "bounding": [
+            560,
+            -220,
+            130,
+            60
+          ]
+        },
+        "inputs": [
+          {
+            "id": "fcf191de-a4e2-40e7-9a7f-252be33186eb",
+            "name": "image",
+            "type": "IMAGE",
+            "linkIds": [
+              100
+            ],
+            "localized_name": "image",
+            "pos": [
+              -640,
+              -200
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "id": "4b756ffb-f9dd-4486-a19a-487b87841907",
+            "name": "label",
+            "type": "STRING",
+            "linkIds": [
+              101
+            ],
+            "localized_name": "label",
+            "pos": [
+              640,
+              -200
+            ]
+          },
+          {
+            "id": "33570720-33ad-4e36-9d28-60a272c891a5",
+            "name": "is_ai",
+            "type": "BOOLEAN",
+            "linkIds": [
+              102
+            ],
+            "localized_name": "is_ai",
+            "pos": [
+              640,
+              -180
+            ]
+          }
+        ],
+        "widgets": [],
+        "nodes": [
+          {
+            "id": 1,
+            "type": "ImgUtilsCheck",
+            "pos": [
+              -300,
+              -220
+            ],
+            "size": [
+              315,
+              126
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "image",
+                "name": "image",
+                "type": "IMAGE",
+                "link": 100
+              },
+              {
+                "localized_name": "mode",
+                "name": "mode",
+                "type": "COMBO",
+                "widget": {
+                  "name": "mode"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "label",
+                "name": "label",
+                "type": "STRING",
+                "links": []
+              },
+              {
+                "localized_name": "boolean",
+                "name": "boolean",
+                "type": "BOOLEAN",
+                "links": []
+              },
+              {
+                "localized_name": "json",
+                "name": "json",
+                "type": "STRING",
+                "links": []
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ImgUtilsCheck"
+            },
+            "widgets_values": [
+              "Is AI Created"
+            ]
+          }
+        ],
+        "groups": [],
+        "links": [
+          {
+            "id": 100,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 1,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 101,
+            "origin_id": 1,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 0,
+            "type": "STRING"
+          },
+          {
+            "id": 102,
+            "origin_id": 1,
+            "origin_slot": 1,
+            "target_id": -20,
+            "target_slot": 1,
+            "type": "BOOLEAN"
+          }
+        ],
+        "extra": {},
+        "category": "imgutils/Judge"
+      }
+    ]
+  },
+  "extra": {}
+}

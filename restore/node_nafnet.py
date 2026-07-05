@@ -1,9 +1,11 @@
-"""Node: ImgUtilsNAFNet — NAFNet image restoration."""
-from __future__ import annotations
-from comfy_api.latest import io
-from ..utils import comfy_to_pil, pil_to_comfy
+"""NAFNet image restoration/de-blurring."""
 
-class ImgUtilsNAFNet(io.ComfyNode):
+from comfy_api.latest import io
+
+from .._shared.bases import _ImageToImage
+
+
+class ImgUtilsNAFNet(_ImageToImage):
     MODELS = ["REDS", "GoPro", "SIDD"]
 
     @classmethod
@@ -14,16 +16,14 @@ class ImgUtilsNAFNet(io.ComfyNode):
             description="Restore/de-blur images using NAFNet. Note: may struggle with Gaussian noise.",
             search_aliases=["restore", "nafnet", "deblur", "clean", "enhance"],
             inputs=[
-                io.Image.Input("image", tooltip="Input image"),
-                io.Combo.Input("model", options=cls.MODELS, default="REDS", tooltip="NAFNet model: REDS, GoPro, or SIDD."),
+                io.Image.Input("image", tooltip="Input image to restore/deblur."),
+                io.Combo.Input("mode", options=cls.MODELS, default="REDS", tooltip="NAFNet model variant: REDS, GoPro, or SIDD."),
                 io.Int.Input("tile_size", default=256, min=64, max=512, step=64, tooltip="Processing tile size."),
             ],
             outputs=[io.Image.Output(display_name="image")],
         )
 
     @classmethod
-    def execute(cls, image, model, tile_size) -> io.NodeOutput:
+    def execute(cls, image, mode, tile_size) -> io.NodeOutput:
         from imgutils.restore import restore_with_nafnet
-        pil = comfy_to_pil(image.numpy() if hasattr(image, "numpy") else image)
-        result = restore_with_nafnet(pil, model=str(model), tile_size=int(tile_size))
-        return io.NodeOutput(pil_to_comfy(result))
+        return cls._run(image, restore_with_nafnet, model=mode, tile_size=tile_size)

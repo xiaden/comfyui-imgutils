@@ -1,7 +1,18 @@
-"""Node: ImgUtilsLPIPS — LPIPS perceptual similarity."""
-from __future__ import annotations
+"""LPIPS perceptual similarity — lower distance = more similar."""
+
 from comfy_api.latest import io
-from ..utils import comfy_to_pil
+from .._shared.tensor import comfy_to_pil
+from ._distance import _distance_label
+
+LPIPS_THRESHOLDS: list[tuple[float, str]] = [
+    (0.10, "exact"),
+    (0.30, "very similar"),
+    (0.45, "similar"),
+    (0.70, "different"),
+    (0.90, "very different"),
+    (float("inf"), "opposite"),
+]
+
 
 class ImgUtilsLPIPS(io.ComfyNode):
     @classmethod
@@ -9,20 +20,24 @@ class ImgUtilsLPIPS(io.ComfyNode):
         return io.Schema(
             node_id="ImgUtilsLPIPS", display_name="Imgutils Compare (LPIPS)",
             category="imgutils/compare",
-            description="Compute LPIPS perceptual similarity between two images. Score < 0.45 = similar.",
+            description="Compute LPIPS perceptual similarity between two images. Lower = more similar.",
             search_aliases=["compare", "lpips", "perceptual", "similarity", "distance"],
             inputs=[
-                io.Image.Input("image_a", tooltip="First image"),
-                io.Image.Input("image_b", tooltip="Second image"),
+                io.Image.Input("image_a", tooltip="First image to compare."),
+                io.Image.Input("image_b", tooltip="Second image for comparison."),
             ],
-            outputs=[io.String.Output(display_name="text")],
+            outputs=[
+                io.String.Output(display_name="label"),
+                io.Float.Output(display_name="distance"),
+            ],
         )
 
     @classmethod
     def execute(cls, image_a, image_b) -> io.NodeOutput:
         from imgutils.metrics import lpips_difference
-        pil_a = comfy_to_pil(image_a.numpy() if hasattr(image_a, "numpy") else image_a)
-        pil_b = comfy_to_pil(image_b.numpy() if hasattr(image_b, "numpy") else image_b)
-        result = lpips_difference(pil_a, pil_b)
-        similar = result < 0.45
-        return io.NodeOutput(f"LPIPS: {result:.4f} ({'similar' if similar else 'different'}, threshold=0.45)")
+
+        pil_a = comfy_to_pil(image_a)
+        pil_b = comfy_to_pil(image_b)
+        distance = lpips_difference(pil_a, pil_b)
+        label = _distance_label(distance, LPIPS_THRESHOLDS)
+        return io.NodeOutput(label, distance)

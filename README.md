@@ -2,80 +2,89 @@
 
 ComfyUI custom nodes wrapping [deepghs/imgutils](https://github.com/deepghs/imgutils) — a comprehensive toolbox for anime image analysis, tagging, detection, pose estimation, and segmentation.
 
-All nodes use the **ComfyUI V2 `io.ComfyNode` API**.
+All nodes use the **ComfyUI V2 `io.ComfyNode` API**. Requires ComfyUI ≥ 0.25.0.
 
-## Nodes (27)
+## Nodes (34)
 
-### 🏷 Tagging & Tags (7)
+### Tagging & Tags (7)
 | Node | Category | Knobs | Outputs |
 |------|----------|-------|---------|
-| **Imgutils WD14 Tagger** | `imgutils/tagging` | `general_threshold` (0.35), `character_threshold` (0.85), `drop_overlap` | `tags`, `scores` |
-| **Imgutils DeepDanbooru Tagger** | `imgutils/tagging` | `general_threshold` (0.5), `character_threshold` (0.5), `drop_overlap` | `tags`, `scores` |
-| **Imgutils DeepGelbooru Tagger** | `imgutils/tagging` | `general_threshold` (0.3), `character_threshold` (0.3), `drop_overlap` | `tags`, `scores` |
-| **Imgutils MLDanbooru Tagger** | `imgutils/tagging` | `threshold` (0.7), `drop_overlap` — *truncated to top 50 tags* | `tags`, `scores` |
-| **Imgutils Camie Tagger** | `imgutils/tagging` | `mode` (balanced, high_precision, high_recall, micro_opt, macro_opt), `drop_overlap` | `tags`, `scores` |
-| **Imgutils PixAI Tagger** | `imgutils/tagging` | `threshold` (0.4) — *truncated to top 50 tags* | `tags`, `scores` |
-| **Imgutils Tags** | `imgutils/tagging` | `operation`, `tags` — 9 ops: filter (blacklisted, basic_character, overlap), sort (original, score, shuffle), format (spaces↔underscores, text) | `tags` |
+| **Imgutils WD14 Tagger** | `imgutils/tagging` | `general_threshold` (0.35), `character_threshold` (0.85), `drop_overlap` | `tags`, `json` |
+| **Imgutils DeepDanbooru Tagger** | `imgutils/tagging` | `general_threshold` (0.5), `character_threshold` (0.5), `drop_overlap` | `tags`, `json` |
+| **Imgutils DeepGelbooru Tagger** | `imgutils/tagging` | `general_threshold` (0.3), `character_threshold` (0.3), `drop_overlap` | `tags`, `json` |
+| **Imgutils MLDanbooru Tagger** | `imgutils/tagging` | `threshold` (0.7), `drop_overlap` — *truncated to top 50 tags* | `tags`, `json` |
+| **Imgutils Camie Tagger** | `imgutils/tagging` | `mode` (Balanced, High Precision, High Recall, Micro Optimized, Macro Optimized), `drop_overlap` | `tags`, `json` |
+| **Imgutils PixAI Tagger** | `imgutils/tagging` | `threshold` (0.4), `drop_overlap` — *truncated to top 50 tags* | `tags`, `json` |
+| **Imgutils Tags** | `imgutils/tagging` | `mode`, `tags` — 9 ops: filter (blacklisted, basic character, overlap), sort (original, by score, shuffle), format (spaces↔underscores, text) | `tags` |
 
-### 🔎 Judge (3)
+> **Note:** MLDanbooru and PixAI taggers return flat dicts (truncated to top 50 tags), unlike WD14/DeepDanbooru/DeepGelbooru/Camie which split output into Rating, General Tags, and Characters sections. The `json` output format reflects this difference.
+
+### Judge (3)
 | Node | Category | Knobs | Outputs |
 |------|----------|-------|---------|
-| **Imgutils Classify** | `imgutils/judge` | `operation` (safe_check) — 11 ops: safe_check, nsfw_pred, anime_rating, anime_dbrating, anime_teen, anime_classify, anime_real, anime_portrait, anime_furry, anime_bangumi_char, anime_style_age | `label`, `score`, `full_response` |
-| **Imgutils Check** | `imgutils/judge` | `operation` (is_ai_created) — 5 ops: is_ai_created, is_monochrome, is_greyscale, is_truncated, anime_completeness | `result`, `detail` |
-| **Imgutils Metric** | `imgutils/judge` | `operation` (laplacian_score) — 2 ops: laplacian_score (sharpness), monochrome_score | `label`, `score` |
+| **Imgutils Classify** | `imgutils/judge` | `mode` (Safe Check) — 11 ops: Safe Check, NSFW Prediction, Anime Rating, Anime DB Rating, Anime Teen, Anime Classify, Anime Real, Anime Portrait, Anime Furry, Anime Bangumi Character, Anime Style Age | `label`, `score`, `json` |
+| **Imgutils Check** | `imgutils/judge` | `mode` (Is AI Created) — 5 ops: Is AI Created, Is Monochrome, Is Greyscale, Is Truncated, Anime Completeness | `label`, `boolean` (BOOL), `json` |
+| **Imgutils Metric** | `imgutils/judge` | `mode` (Laplacian Score) — 2 ops: Laplacian Score (sharpness), Monochrome Score | `label`, `score`, `json` |
 
-### 📝 Describe (1)
+### OCR (1)
 | Node | Category | Knobs | Outputs |
 |------|----------|-------|---------|
-| **Imgutils OCR** | `imgutils/describe` | `heat_threshold` (0.3), `box_threshold` (0.7) — PaddleOCR text extraction | `text`, `scores`, `bboxes` |
+| **Imgutils OCR** | `imgutils/ocr` | `heat_threshold` (0.3), `box_threshold` (0.7) — PaddleOCR text extraction | `detections`, `json` |
 
-### 🔍 Detect (1)
+### Detect (1)
 | Node | Category | Knobs | Outputs |
 |------|----------|-------|---------|
-| **Imgutils Detect** | `imgutils/detect` | `operation` (detect_faces) — 10 ops: detect_faces, detect_hands, detect_heads, detect_eyes, detect_person, detect_halfbody, detect_with_nudenet, detect_censors, detect_text_with_ocr, detect_with_booru_yolo; `confidence` (0.5) | `detections`, `boxes`, `bboxes` |
+| **Imgutils Detect** | `imgutils/detect` | `mode` (Detect Faces) — 10 ops: Detect Faces, Detect Hands, Detect Heads, Detect Eyes, Detect Person, Detect Halfbody, Detect with NudeNet, Detect Censors, Detect Text with OCR, Detect with Booru YOLO; `confidence` (0.5) | `detections`, `json` |
 
-### ✏️ Edge (3)
+### Edge (3)
 | Node | Category | Knobs | Outputs |
 |------|----------|-------|---------|
 | **Imgutils Edge (Canny)** | `imgutils/edge` | `low_threshold` (100), `high_threshold` (200) | IMAGE |
 | **Imgutils Edge (Lineart)** | `imgutils/edge` | `coarse` (false), `detect_resolution` (512) | IMAGE |
 | **Imgutils Edge (Lineart Anime)** | `imgutils/edge` | `detect_resolution` (512) | IMAGE |
 
-### 🛠 Restore (3)
+### Restore (3)
 | Node | Category | Knobs | Outputs |
 |------|----------|-------|---------|
-| **Imgutils Restore (SCUNet)** | `imgutils/restore` | `model` (GAN / PSNR), `tile_size` (128) | IMAGE |
-| **Imgutils Restore (NAFNet)** | `imgutils/restore` | `model` (REDS / GoPro / SIDD), `tile_size` (256) | IMAGE |
+| **Imgutils Restore (SCUNet)** | `imgutils/restore` | `mode` (GAN / PSNR), `tile_size` (128) | IMAGE |
+| **Imgutils Restore (NAFNet)** | `imgutils/restore` | `mode` (REDS / GoPro / SIDD), `tile_size` (256) | IMAGE |
 | **Imgutils Restore (Adversarial)** | `imgutils/restore` | — (no configurable knobs) | IMAGE |
 
-### 🎨 Transform (4)
+### Transform (4)
 | Node | Category | Knobs | Outputs |
 |------|----------|-------|---------|
 | **Imgutils Upscale (CDC)** | `imgutils/transform` | `tile_size` (512) — high quality anime upscaling | IMAGE |
-| **Imgutils Censor** | `imgutils/transform` | `method` (pixelate / blur / color), `nipple_f`, `penis`, `pussy`, `conf_threshold` (0.3) | IMAGE |
+| **Imgutils Censor** | `imgutils/transform` | `mode` (Pixelate / Blur / Color), `nipple_f`, `penis`, `pussy`, `confidence` (0.3) | IMAGE |
 | **Imgutils Align** | `imgutils/transform` | `max_size` (1024) — resize longest side, preserve aspect ratio | IMAGE |
 | **Imgutils Squeeze** | `imgutils/transform` | `threshold` (0.7), `median_filter` (5) — auto-crop to visible content | IMAGE |
 
-### 📊 Compare (2)
+### Compare (2)
 | Node | Category | Knobs | Outputs |
 |------|----------|-------|---------|
-| **Imgutils Compare (CCIP)** | `imgutils/compare` | `operation` (ccip_difference) — ccip_difference (similarity distance) or ccip_same (same-character boolean) | `text` |
-| **Imgutils Compare (LPIPS)** | `imgutils/compare` | — (no configurable knobs) | `text` |
+| **Imgutils Compare (CCIP)** | `imgutils/compare` | — (CCIP distance comparison, lower = more similar) | `label`, `distance` (FLOAT) |
+| **Imgutils Compare (LPIPS)** | `imgutils/compare` | — (LPIPS perceptual similarity, lower = more similar) | `label`, `distance` (FLOAT) |
 
-### 🦴 Pose (1)
+### Pose (1)
 | Node | Category | Knobs | Outputs |
 |------|----------|-------|---------|
-| **Imgutils Pose** | `imgutils/pose` | `visualization` (full) — body_only, body_with_face, body_with_hands, full; `auto_detect` (true) — DWPose keypoints | IMAGE, `keypoints_json` |
+| **Imgutils Pose** | `imgutils/pose` | `mode` (Full) — Body Only, Body with Face, Body with Hands, Full; `auto_detect` (true) — DWPose keypoints | IMAGE (`skeleton`), `json` |
 
-### ✂️ Segment (1)
+### Segment (1)
 | Node | Category | Knobs | Outputs |
 |------|----------|-------|---------|
-| **Imgutils Segment** | `imgutils/segment` | `scale` (1024) — isnetis character segmentation | MASK, IMAGE (RGBA) |
+| **Imgutils Segment** | `imgutils/segment` | `scale` (1024) — isnetis character segmentation | MASK, IMAGE |
 
-### 🔧 Utility (1)
+### Utility (8)
 | Node | Category | Knobs | Outputs |
 |------|----------|-------|---------|
-| **Imgutils Bbox Unpack** | `imgutils/bbox` | `bbox_string` — parse OCR/Detect bbox output | `count` (INT), `labels`, `iterable` (JSON) |
+| **Imgutils Bbox Unpack** | `imgutils/utility` | `bboxes` — parse OCR/Detect bbox output | `count` (INT), `labels`, `iterable` (JSON) |
+| **Imgutils Bbox Crop** | `imgutils/utility` | `bboxes` — crop image to each bbox from Detect/OCR JSON | IMAGE (list — one per bbox) |
+| **Imgutils Bbox Mask** | `imgutils/utility` | `bboxes` — create mask for each bbox from Detect/OCR JSON | MASK (list — one per bbox) |
+| **Imgutils Label Contains** | `imgutils/utility` | `labels`, `search` — case-insensitive substring check | `boolean` (BOOL) |
+| **Imgutils Boolean Logic** | `imgutils/utility` | `a` (BOOL), `b` (BOOL), `op` — AND, OR, XOR, NAND, NOR | `result` (BOOL) |
+| **Imgutils Deduplicate Tags** | `imgutils/utility` | `tags` — merge multiple tag strings, deduplicate (supports multiple input wires) | `tags`, `count` (INT) |
+| **Imgutils Score Threshold** | `imgutils/utility` | `score` (0.5), `threshold` (0.5) — boolean gate: score >= threshold | `boolean` (BOOL) |
+| **Imgutils JSON Filter** | `imgutils/utility` | `json`, `threshold` (0.5) — filter scored JSON dict to entries above threshold | `json`, `tags`, `count` (INT) |
 
 ## Installation
 
@@ -92,7 +101,7 @@ Or install via ComfyUI-Manager (once published to the Registry).
 
 - Python >= 3.10
 - `dghs-imgutils[gpu] >= 0.19.0` — the underlying analysis library with GPU-accelerated ONNX runtime
-- `onnxruntime` — provided by ComfyUI (ships both CPU and GPU variants in its venv) and pulled by `dghs-imgutils[gpu]` on install. Nothing to manually configure.
+- `onnxruntime` — provided by ComfyUI's bundled runtime and pulled by `dghs-imgutils[gpu]` on install. In most cases no manual configuration is needed. If you encounter onnxruntime version conflicts, install the version matching your CUDA toolkit.
 
 Models are downloaded automatically from HuggingFace Hub on first use and cached to `~/.cache/huggingface/hub/`. No manual model downloads needed.
 
@@ -100,14 +109,21 @@ Models are downloaded automatically from HuggingFace Hub on first use and cached
 
 ```
 comfyui-imgutils/
-├── __init__.py           # NODE_CLASS_MAPPINGS + ComfyExtension entrypoint
-├── node_*.py             # Root nodes (OCR, Detect, Pose, Segment, Tags, CDC, Censor, Align, Squeeze, Bbox)
-├── tagging/              # 6 tagger nodes — one per model
-├── edge/                 # 3 edge detection nodes
-├── restore/              # 3 restoration/denoising nodes
-├── compare/              # 2 image comparison nodes
-├── judge/                # 3 image analysis nodes
-└── utils.py              # PIL ↔ ComfyUI tensor conversion
+├── __init__.py             # node registration table + ComfyExtension entrypoint
+├── _shared/                # shared internals (not a node subpackage)
+│   ├── bases.py            # _ImageToImage base class
+│   ├── formatting.py       # string formatting and serialization helpers
+│   └── tensor.py           # PIL ⇄ Comfy tensor conversion utilities
+├── tagging/                # 7 tagger + tag-processing nodes
+├── detect/                 # 2 detection + OCR nodes
+├── pose/                   # 1 pose estimation node
+├── segment/                # 1 character segmentation node
+├── edge/                   # 3 edge detection nodes (Canny, Lineart, Anime)
+├── restore/                # 3 restoration nodes (SCUNet, NAFNet, Adversarial)
+├── compare/                # 2 comparison nodes (CCIP, LPIPS)
+├── judge/                  # 3 classification/check/metric nodes
+├── transform/              # 4 image transform nodes (CDC, Censor, Align, Squeeze)
+└── utility/                # 7 utility nodes (Bbox, Label, Dedup, Score, JSON)
 ```
 
 ## License

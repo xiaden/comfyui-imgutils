@@ -1,19 +1,14 @@
-"""
-Node: ImgUtilsMLDanbooru — MLDanbooru tagger.
+"""MLDanbooru tagger — general tags only (no rating/character split)."""
 
-Tags images using the ML-Danbooru model with a single confidence threshold.
-Returns general tags only (no rating/character split).
-"""
-
-from __future__ import annotations
+import json
 
 from comfy_api.latest import io
 
-from ..utils import comfy_to_pil
+from .._shared.tensor import comfy_to_pil
 
 
 class ImgUtilsMLDanbooru(io.ComfyNode):
-    """MLDanbooru tagger — general tags with a single confidence threshold."""
+    """MLDanbooru tagger — general tags only, single confidence threshold, top 50 returned."""
 
     @classmethod
     def define_schema(cls) -> io.Schema:
@@ -29,7 +24,7 @@ class ImgUtilsMLDanbooru(io.ComfyNode):
                 "mldanbooru", "tagging", "danbooru", "caption", "describe",
             ],
             inputs=[
-                io.Image.Input("image", tooltip="Input image to tag"),
+                io.Image.Input("image", tooltip="Input image to tag."),
                 io.Float.Input(
                     "threshold", default=0.7, min=0.0, max=1.0, step=0.05,
                     tooltip="Confidence threshold for all tags.",
@@ -41,7 +36,7 @@ class ImgUtilsMLDanbooru(io.ComfyNode):
             ],
             outputs=[
                 io.String.Output(display_name="tags"),
-                io.String.Output(display_name="scores"),
+                io.String.Output(display_name="json"),
             ],
         )
 
@@ -49,14 +44,14 @@ class ImgUtilsMLDanbooru(io.ComfyNode):
     def execute(cls, image, threshold, drop_overlap=False) -> io.NodeOutput:
         from imgutils.tagging import get_mldanbooru_tags
 
-        pil_image = comfy_to_pil(image.numpy() if hasattr(image, "numpy") else image)
+        pil_image = comfy_to_pil(image)
         result = get_mldanbooru_tags(
             pil_image,
-            threshold=float(threshold),
-            drop_overlap=bool(drop_overlap),
+            threshold=threshold,
+            drop_overlap=drop_overlap,
         )
 
-        sorted_items = sorted(result.items(), key=lambda x: x[1], reverse=True)  # type: ignore[arg-type]
+        sorted_items = sorted(result.items(), key=lambda item: item[1], reverse=True)
         tag_names = ", ".join(k for k, v in sorted_items[:50])
-        tag_scores = "\n".join(f"  {k}: {v:.4f}" for k, v in sorted_items[:50])
-        return io.NodeOutput(tag_names, tag_scores)
+        json_str = json.dumps(result, ensure_ascii=False)
+        return io.NodeOutput(tag_names, json_str)

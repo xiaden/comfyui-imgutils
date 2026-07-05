@@ -1,0 +1,399 @@
+{
+  "revision": 0,
+  "last_node_id": 10,
+  "last_link_id": 0,
+  "nodes": [
+    {
+      "id": 10,
+      "type": "ec2474d5-11d1-4d42-a39d-d97388c399bd",
+      "pos": [
+        0,
+        0
+      ],
+      "size": [
+        315,
+        82
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "IMAGE",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "FILTERED_TAGS",
+          "name": "FILTERED_TAGS",
+          "type": "STRING",
+          "links": []
+        }
+      ],
+      "properties": {
+        "proxyWidgets": [
+          [
+            "1",
+            "general_threshold"
+          ],
+          [
+            "1",
+            "character_threshold"
+          ],
+          [
+            "2",
+            "threshold"
+          ],
+          [
+            "3",
+            "mode"
+          ]
+        ]
+      },
+      "widgets_values": [],
+      "title": "Anime Tag & Filter"
+    }
+  ],
+  "links": [],
+  "version": 0.4,
+  "definitions": {
+    "subgraphs": [
+      {
+        "id": "ec2474d5-11d1-4d42-a39d-d97388c399bd",
+        "version": 1,
+        "state": {
+          "lastGroupId": 0,
+          "lastNodeId": 4,
+          "lastLinkId": 104,
+          "lastRerouteId": 0
+        },
+        "revision": 0,
+        "config": {},
+        "name": "Anime Tag & Filter",
+        "description": "Tags an anime image with WD14, filters tags above threshold, converts underscores to spaces, and deduplicates.",
+        "inputNode": {
+          "id": -10,
+          "bounding": [
+            -720,
+            -220,
+            140,
+            60
+          ]
+        },
+        "outputNode": {
+          "id": -20,
+          "bounding": [
+            560,
+            -220,
+            130,
+            60
+          ]
+        },
+        "inputs": [
+          {
+            "id": "5ff88a5a-78fa-47e9-a7e4-8aa2547308b0",
+            "name": "image",
+            "type": "IMAGE",
+            "linkIds": [
+              100
+            ],
+            "localized_name": "image",
+            "pos": [
+              -640,
+              -200
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "id": "494b34ac-e7cb-47a4-9edd-5d5f2efb9a0f",
+            "name": "filtered_tags",
+            "type": "STRING",
+            "linkIds": [
+              104
+            ],
+            "localized_name": "filtered_tags",
+            "pos": [
+              640,
+              -200
+            ]
+          }
+        ],
+        "widgets": [],
+        "nodes": [
+          {
+            "id": 1,
+            "type": "ImgUtilsWD14",
+            "pos": [
+              -520,
+              -300
+            ],
+            "size": [
+              315,
+              150
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "image",
+                "name": "image",
+                "type": "IMAGE",
+                "link": 100
+              },
+              {
+                "localized_name": "general_threshold",
+                "name": "general_threshold",
+                "type": "FLOAT",
+                "widget": {
+                  "name": "general_threshold"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "character_threshold",
+                "name": "character_threshold",
+                "type": "FLOAT",
+                "widget": {
+                  "name": "character_threshold"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "drop_overlap",
+                "name": "drop_overlap",
+                "type": "BOOLEAN",
+                "widget": {
+                  "name": "drop_overlap"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "tags",
+                "name": "tags",
+                "type": "STRING",
+                "slot_index": 0,
+                "links": []
+              },
+              {
+                "localized_name": "json",
+                "name": "json",
+                "type": "STRING",
+                "slot_index": 1,
+                "links": []
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ImgUtilsWD14"
+            },
+            "widgets_values": [
+              0.35,
+              0.85,
+              false
+            ]
+          },
+          {
+            "id": 2,
+            "type": "ImgUtilsJSONFilter",
+            "pos": [
+              -200,
+              -300
+            ],
+            "size": [
+              315,
+              126
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "json",
+                "name": "json",
+                "type": "STRING",
+                "link": 101
+              },
+              {
+                "localized_name": "threshold",
+                "name": "threshold",
+                "type": "FLOAT",
+                "widget": {
+                  "name": "threshold"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "json",
+                "name": "json",
+                "type": "STRING",
+                "slot_index": 0,
+                "links": []
+              },
+              {
+                "localized_name": "tags",
+                "name": "tags",
+                "type": "STRING",
+                "slot_index": 1,
+                "links": []
+              },
+              {
+                "localized_name": "count",
+                "name": "count",
+                "type": "INT",
+                "slot_index": 2,
+                "links": []
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ImgUtilsJSONFilter"
+            },
+            "widgets_values": [
+              0.5
+            ]
+          },
+          {
+            "id": 3,
+            "type": "ImgUtilsTags",
+            "pos": [
+              100,
+              -300
+            ],
+            "size": [
+              315,
+              126
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "tags",
+                "name": "tags",
+                "type": "STRING",
+                "link": 102
+              },
+              {
+                "localized_name": "mode",
+                "name": "mode",
+                "type": "COMBO",
+                "widget": {
+                  "name": "mode"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "tags",
+                "name": "tags",
+                "type": "STRING",
+                "links": []
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ImgUtilsTags"
+            },
+            "widgets_values": [
+              "Underscores to Spaces"
+            ]
+          },
+          {
+            "id": 4,
+            "type": "ImgUtilsDedup",
+            "pos": [
+              400,
+              -300
+            ],
+            "size": [
+              315,
+              98
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "tags",
+                "name": "tags",
+                "type": "STRING",
+                "link": 103
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "tags",
+                "name": "tags",
+                "type": "STRING",
+                "links": []
+              },
+              {
+                "localized_name": "count",
+                "name": "count",
+                "type": "INT",
+                "links": []
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ImgUtilsDedup"
+            },
+            "widgets_values": null
+          }
+        ],
+        "groups": [],
+        "links": [
+          {
+            "id": 100,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 1,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 101,
+            "origin_id": 1,
+            "origin_slot": 1,
+            "target_id": 2,
+            "target_slot": 0,
+            "type": "STRING"
+          },
+          {
+            "id": 102,
+            "origin_id": 2,
+            "origin_slot": 1,
+            "target_id": 3,
+            "target_slot": 0,
+            "type": "STRING"
+          },
+          {
+            "id": 103,
+            "origin_id": 3,
+            "origin_slot": 0,
+            "target_id": 4,
+            "target_slot": 0,
+            "type": "STRING"
+          },
+          {
+            "id": 104,
+            "origin_id": 4,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 0,
+            "type": "STRING"
+          }
+        ],
+        "extra": {},
+        "category": "imgutils/Tagging"
+      }
+    ]
+  },
+  "extra": {}
+}

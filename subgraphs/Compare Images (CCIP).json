@@ -1,0 +1,235 @@
+{
+  "revision": 0,
+  "last_node_id": 10,
+  "last_link_id": 0,
+  "nodes": [
+    {
+      "id": 10,
+      "type": "e0031f1b-6789-4d23-b147-dc49c902427d",
+      "pos": [
+        0,
+        0
+      ],
+      "size": [
+        315,
+        82
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image_a",
+          "name": "image_a",
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "localized_name": "image_b",
+          "name": "image_b",
+          "type": "IMAGE",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "LABEL",
+          "name": "LABEL",
+          "type": "STRING",
+          "links": []
+        },
+        {
+          "localized_name": "DISTANCE",
+          "name": "DISTANCE",
+          "type": "FLOAT",
+          "links": []
+        }
+      ],
+      "properties": {},
+      "widgets_values": [],
+      "title": "Compare Images (CCIP)"
+    }
+  ],
+  "links": [],
+  "version": 0.4,
+  "definitions": {
+    "subgraphs": [
+      {
+        "id": "e0031f1b-6789-4d23-b147-dc49c902427d",
+        "version": 1,
+        "state": {
+          "lastGroupId": 0,
+          "lastNodeId": 1,
+          "lastLinkId": 103,
+          "lastRerouteId": 0
+        },
+        "revision": 0,
+        "config": {},
+        "name": "Compare Images (CCIP)",
+        "description": "Compares two images using CCIP distance. Lower distance = more similar. Useful for deduplication or quality comparison.",
+        "inputNode": {
+          "id": -10,
+          "bounding": [
+            -720,
+            -220,
+            140,
+            60
+          ]
+        },
+        "outputNode": {
+          "id": -20,
+          "bounding": [
+            560,
+            -220,
+            130,
+            60
+          ]
+        },
+        "inputs": [
+          {
+            "id": "8ddaeac9-ddd7-404f-b3d3-82aacb72a27b",
+            "name": "image_a",
+            "type": "IMAGE",
+            "linkIds": [
+              100
+            ],
+            "localized_name": "image_a",
+            "pos": [
+              -640,
+              -200
+            ]
+          },
+          {
+            "id": "f0560663-fcb2-4b14-a51f-2eb585e5d804",
+            "name": "image_b",
+            "type": "IMAGE",
+            "linkIds": [
+              101
+            ],
+            "localized_name": "image_b",
+            "pos": [
+              -640,
+              -180
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "id": "47476810-092f-43d8-b45d-889a67166249",
+            "name": "label",
+            "type": "STRING",
+            "linkIds": [
+              102
+            ],
+            "localized_name": "label",
+            "pos": [
+              640,
+              -200
+            ]
+          },
+          {
+            "id": "1300ef98-d5fa-4c31-b951-f4fbc6a721eb",
+            "name": "distance",
+            "type": "FLOAT",
+            "linkIds": [
+              103
+            ],
+            "localized_name": "distance",
+            "pos": [
+              640,
+              -180
+            ]
+          }
+        ],
+        "widgets": [],
+        "nodes": [
+          {
+            "id": 1,
+            "type": "ImgUtilsCCIP",
+            "pos": [
+              -200,
+              -220
+            ],
+            "size": [
+              315,
+              82
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "image_a",
+                "name": "image_a",
+                "type": "IMAGE",
+                "link": 100
+              },
+              {
+                "localized_name": "image_b",
+                "name": "image_b",
+                "type": "IMAGE",
+                "link": 101
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "label",
+                "name": "label",
+                "type": "STRING",
+                "links": []
+              },
+              {
+                "localized_name": "distance",
+                "name": "distance",
+                "type": "FLOAT",
+                "links": []
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ImgUtilsCCIP"
+            },
+            "widgets_values": null
+          }
+        ],
+        "groups": [],
+        "links": [
+          {
+            "id": 100,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 1,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 101,
+            "origin_id": -10,
+            "origin_slot": 1,
+            "target_id": 1,
+            "target_slot": 1,
+            "type": "IMAGE"
+          },
+          {
+            "id": 102,
+            "origin_id": 1,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 0,
+            "type": "STRING"
+          },
+          {
+            "id": 103,
+            "origin_id": 1,
+            "origin_slot": 1,
+            "target_id": -20,
+            "target_slot": 1,
+            "type": "FLOAT"
+          }
+        ],
+        "extra": {},
+        "category": "imgutils/Compare"
+      }
+    ]
+  },
+  "extra": {}
+}

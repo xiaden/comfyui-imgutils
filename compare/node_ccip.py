@@ -1,35 +1,43 @@
-"""Node: ImgUtilsCCIP — CCIP character similarity comparison."""
-from __future__ import annotations
+"""CCIP character identity similarity — lower distance = more similar."""
+
 from comfy_api.latest import io
-from ..utils import comfy_to_pil
+from .._shared.tensor import comfy_to_pil
+from ._distance import _distance_label
+
+CCIP_THRESHOLDS: list[tuple[float, str]] = [
+    (0.10, "exact"),
+    (0.25, "very similar"),
+    (0.40, "similar"),
+    (0.60, "different"),
+    (0.80, "very different"),
+    (float("inf"), "opposite"),
+]
+
 
 class ImgUtilsCCIP(io.ComfyNode):
-    OPS = ["ccip_difference", "ccip_same"]
-
     @classmethod
     def define_schema(cls) -> io.Schema:
         return io.Schema(
             node_id="ImgUtilsCCIP", display_name="Imgutils Compare (CCIP)",
             category="imgutils/compare",
-            description="Compare anime character identity using CCIP. Outputs similarity distance or same-character check.",
+            description="Compare anime character identity using CCIP distance. Lower = more similar.",
             search_aliases=["compare", "ccip", "character", "similarity", "distance"],
             inputs=[
-                io.Image.Input("image_a", tooltip="First image"),
-                io.Image.Input("image_b", tooltip="Second image"),
-                io.Combo.Input("operation", options=cls.OPS, default="ccip_difference", tooltip="CCIP comparison mode."),
+                io.Image.Input("image_a", tooltip="First image to compare."),
+                io.Image.Input("image_b", tooltip="Second image for comparison."),
             ],
-            outputs=[io.String.Output(display_name="text")],
+            outputs=[
+                io.String.Output(display_name="label"),
+                io.Float.Output(display_name="distance"),
+            ],
         )
 
     @classmethod
-    def execute(cls, image_a, image_b, operation) -> io.NodeOutput:
-        from imgutils.metrics import ccip_difference, ccip_same
-        pil_a = comfy_to_pil(image_a.numpy() if hasattr(image_a, "numpy") else image_a)
-        pil_b = comfy_to_pil(image_b.numpy() if hasattr(image_b, "numpy") else image_b)
+    def execute(cls, image_a, image_b) -> io.NodeOutput:
+        from imgutils.metrics import ccip_difference
 
-        if operation == "ccip_difference":
-            result = ccip_difference(pil_a, pil_b)
-            return io.NodeOutput(f"CCIP distance: {result:.4f} (lower = more similar)")
-        else:
-            result = ccip_same(pil_a, pil_b)
-            return io.NodeOutput(f"Same character: {'true' if result else 'false'}")
+        pil_a = comfy_to_pil(image_a)
+        pil_b = comfy_to_pil(image_b)
+        distance = ccip_difference(pil_a, pil_b)
+        label = _distance_label(distance, CCIP_THRESHOLDS)
+        return io.NodeOutput(label, distance)

@@ -1,27 +1,21 @@
-"""
-Node: ImgUtilsOCR — Optical character recognition.
-
-Extracts text from images using PaddleOCR through imgutils.
-"""
-
-from __future__ import annotations
+"""OCR text extraction from anime images via PaddleOCR."""
 
 import json
 
 from comfy_api.latest import io
 
-from .utils import comfy_to_pil
+from .._shared.tensor import comfy_to_pil
 
 
 class ImgUtilsOCR(io.ComfyNode):
-    """Optical character recognition for anime images."""
+    """Extract text from anime images using PaddleOCR."""
 
     @classmethod
     def define_schema(cls) -> io.Schema:
         return io.Schema(
             node_id="ImgUtilsOCR",
             display_name="Imgutils OCR",
-            category="imgutils/describe",
+            category="imgutils/ocr",
             description=(
                 "Extract text from images using PaddleOCR. "
                 "Returns recognized text strings and text with confidence scores."
@@ -30,7 +24,7 @@ class ImgUtilsOCR(io.ComfyNode):
                 "ocr", "text", "recognize", "read", "paddleocr", "extract",
             ],
             inputs=[
-                io.Image.Input("image", tooltip="Input image to extract text from"),
+                io.Image.Input("image", tooltip="Input image for text extraction."),
                 io.Float.Input(
                     "heat_threshold", default=0.3, min=0.0, max=1.0, step=0.05,
                     tooltip="Heat map threshold for text region detection. Lower = more regions.",
@@ -41,9 +35,8 @@ class ImgUtilsOCR(io.ComfyNode):
                 ),
             ],
             outputs=[
-                io.String.Output(display_name="text"),
-                io.String.Output(display_name="scores"),
-                io.String.Output(display_name="bboxes"),
+                io.String.Output(display_name="detections"),
+                io.String.Output(display_name="json"),
             ],
         )
 
@@ -51,24 +44,20 @@ class ImgUtilsOCR(io.ComfyNode):
     def execute(cls, image, heat_threshold, box_threshold) -> io.NodeOutput:
         from imgutils.ocr import ocr
 
-        pil_image = comfy_to_pil(image.numpy() if hasattr(image, "numpy") else image)
+        pil_image = comfy_to_pil(image)
         results = ocr(
             pil_image,
-            heat_threshold=float(heat_threshold),
-            box_threshold=float(box_threshold),
+            heat_threshold=heat_threshold,
+            box_threshold=box_threshold,
         )
 
         if not results:
-            return io.NodeOutput("No text detected.", "No text detected.")
+            return io.NodeOutput("No text detected.", "[]")
 
         text_strs = [text for bbox, text, conf in results]
         text_only = ", ".join(f'"{t}"' for t in text_strs)
-        text_scores = "\n".join(
-            f"  [{bbox[0]},{bbox[1]},{bbox[2]},{bbox[3]}] \"{text}\" ({conf:.4f})"
-            for bbox, text, conf in results
-        )
         bboxes_json = json.dumps([
             {"bbox": [bbox[0], bbox[1], bbox[2], bbox[3]], "label": text, "score": conf}
             for bbox, text, conf in results
         ], ensure_ascii=False)
-        return io.NodeOutput(text_only, text_scores, bboxes_json)
+        return io.NodeOutput(text_only, bboxes_json)

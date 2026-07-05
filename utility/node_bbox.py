@@ -1,59 +1,35 @@
-"""
-Node: ImgUtilsBboxUnpack — "Unpack bboxes"
-
-Takes a raw bbox string from any imgutils detection/OCR function
-and unpacks it into count, labels, and an iterable JSON array.
-"""
-
-from __future__ import annotations
+"""Parse and unpack bounding box strings from OCR/detection into counts, labels, and iterable JSON."""
 
 import json
 import re
-from typing import Any
 
 from comfy_api.latest import io
 
 
-def _parse_bboxes(text: str) -> list[dict[str, Any]]:
-    """
-    Parse a bbox result string into a list of structured entries.
-
-    Accepts these formats (preference order):
-
-    1. JSON array (ImgUtilsOCR/ImgUtilsDetect "bboxes" output):
-       [{"bbox": [x1,y1,x2,y2], "label": "...", "score": 0.95}, ...]
-
-    2. Detection text (ImgUtilsDetect "boxes" output):
-       [x1,y1,x2,y2] label (0.9500)
-
-    3. OCR text (ImgUtilsOCR "scores" output):
-       [x1,y1,x2,y2] "text" (0.9500)
-    """
+def _parse_bboxes(text: str) -> list[dict]:
+    """Parse a bbox result string into a list of structured entries."""
     text = text.strip()
 
-    # ---- 1. JSON format ----
     if text.startswith("[") and text.endswith("]"):
         try:
             raw = json.loads(text)
         except json.JSONDecodeError:
-            pass
-        else:
-            entries: list[dict[str, Any]] = []
-            for item in raw:
-                if not isinstance(item, dict):
-                    continue
-                bbox = item.get("bbox") or item.get("box") or item.get("coords", [0, 0, 0, 0])
-                if isinstance(bbox, list) and len(bbox) == 4:
-                    entries.append({
-                        "x1": int(bbox[0]), "y1": int(bbox[1]),
-                        "x2": int(bbox[2]), "y2": int(bbox[3]),
-                        "label": str(item["label"]),
-                        "score": float(item["score"]),
-                    })
-            if entries:
-                return entries
+            raw = []
+        entries: list[dict] = []
+        for item in raw:
+            if not isinstance(item, dict):
+                continue
+            bbox = item.get("bbox") or item.get("box") or item.get("coords", [0, 0, 0, 0])
+            if isinstance(bbox, list) and len(bbox) == 4:
+                entries.append({
+                    "x1": int(bbox[0]), "y1": int(bbox[1]),
+                    "x2": int(bbox[2]), "y2": int(bbox[3]),
+                    "label": str(item["label"]),
+                    "score": float(item["score"]),
+                })
+        if entries:
+            return entries
 
-    # ---- 2. Detection format: "[x1,y1,x2,y2] label (0.9500)" ----
     detect_pattern = re.compile(
         r"\[\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\]\s+"
         r"(\S+?)\s*\(\s*([\d.]+)\s*\)"
@@ -70,7 +46,6 @@ def _parse_bboxes(text: str) -> list[dict[str, Any]]:
             for x1, y1, x2, y2, label, score in detect_matches
         ]
 
-    # ---- 3. OCR format: '[x1,y1,x2,y2] "text" (0.9500)' ----
     ocr_pattern = re.compile(
         r"\[\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\]\s+"
         r"[\"']([^\"']+)[\"']\s*\(\s*([\d.]+)\s*\)"
@@ -91,23 +66,23 @@ def _parse_bboxes(text: str) -> list[dict[str, Any]]:
 
 
 class ImgUtilsBboxUnpack(io.ComfyNode):
-    """Unpack bbox output from imgutils nodes into count, labels, and iterable JSON."""
+    """Parse bbox output strings into count, labels, and JSON suitable for iteration."""
 
     @classmethod
     def define_schema(cls) -> io.Schema:
         return io.Schema(
             node_id="ImgUtilsBboxUnpack",
             display_name="Imgutils Bbox Unpack",
-            category="imgutils/bbox",
+            category="imgutils/utility",
             description=(
-                "Unpack a raw bbox result string from imgutils OCR or detection nodes "
+                "Unpack a raw bboxes result string from imgutils OCR or detection nodes "
                 "into a count, comma-separated labels, and an iterable JSON array "
                 "suitable for use with forLoopStart/ForeachListBegin iterators."
             ),
             inputs=[
                 io.String.Input(
-                    "bbox_string",
-                    tooltip="Raw bbox output from imgutils nodes (JSON array or text-tuple format).",
+                    "bboxes",
+                    tooltip="Raw bboxes output from imgutils nodes (JSON array or text-tuple format).",
                 ),
             ],
             outputs=[
@@ -118,22 +93,11 @@ class ImgUtilsBboxUnpack(io.ComfyNode):
         )
 
     @classmethod
-    def execute(cls, bbox_string) -> io.NodeOutput:
-        """
-        Parse bbox string and emit structured outputs.
-
-        Args:
-            bbox_string: Raw result string from an imgutils function.
-
-        Returns:
-            NodeOutput with (count: int, labels: str, iterable: str)
-        """
-        entries = _parse_bboxes(bbox_string)
+    def execute(cls, bboxes) -> io.NodeOutput:
+        entries = _parse_bboxes(bboxes)
 
         count = len(entries)
-
         labels = ", ".join(e["label"] for e in entries) if entries else ""
-
         iterable = json.dumps(
             [
                 {

@@ -1,0 +1,684 @@
+{
+  "revision": 0,
+  "last_node_id": 10,
+  "last_link_id": 0,
+  "nodes": [
+    {
+      "id": 10,
+      "type": "b3f810be-f267-4d31-8a65-c882de87c843",
+      "pos": [
+        0,
+        0
+      ],
+      "size": [
+        315,
+        82
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "IMAGE",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "TAGS",
+          "name": "TAGS",
+          "type": "STRING",
+          "links": []
+        },
+        {
+          "localized_name": "NSFW_SCORE",
+          "name": "NSFW_SCORE",
+          "type": "FLOAT",
+          "links": []
+        },
+        {
+          "localized_name": "UNDERAGE_SCORE",
+          "name": "UNDERAGE_SCORE",
+          "type": "FLOAT",
+          "links": []
+        },
+        {
+          "localized_name": "CHILD_REF",
+          "name": "CHILD_REF",
+          "type": "BOOLEAN",
+          "links": []
+        },
+        {
+          "localized_name": "NSFW_TAG_REF",
+          "name": "NSFW_TAG_REF",
+          "type": "BOOLEAN",
+          "links": []
+        },
+        {
+          "localized_name": "SUSPECT_COMBO",
+          "name": "SUSPECT_COMBO",
+          "type": "BOOLEAN",
+          "links": []
+        }
+      ],
+      "properties": {
+        "proxyWidgets": [
+          [
+            "1",
+            "general_threshold"
+          ],
+          [
+            "1",
+            "character_threshold"
+          ],
+          [
+            "2",
+            "mode"
+          ],
+          [
+            "3",
+            "mode"
+          ],
+          [
+            "4",
+            "search"
+          ],
+          [
+            "5",
+            "search"
+          ],
+          [
+            "6",
+            "op"
+          ]
+        ]
+      },
+      "widgets_values": [],
+      "title": "Safety Check"
+    }
+  ],
+  "links": [],
+  "version": 0.4,
+  "definitions": {
+    "subgraphs": [
+      {
+        "id": "b3f810be-f267-4d31-8a65-c882de87c843",
+        "version": 1,
+        "state": {
+          "lastGroupId": 0,
+          "lastNodeId": 6,
+          "lastLinkId": 205,
+          "lastRerouteId": 0
+        },
+        "revision": 0,
+        "config": {},
+        "name": "Safety Check",
+        "description": "Multi-signal safety screening for anime images. Runs WD14 tagging, NSFW prediction, underage detection (Anime Teen), checks tags for child/NSFW keyword references, and combines the tag-based checks into a single SUSPECT_COMBO signal via AND logic. A high NSFW score combined with child tags or a high underage score warrants human review.",
+        "inputNode": {
+          "id": -10,
+          "bounding": [
+            -720,
+            -220,
+            140,
+            60
+          ]
+        },
+        "outputNode": {
+          "id": -20,
+          "bounding": [
+            560,
+            -220,
+            130,
+            60
+          ]
+        },
+        "inputs": [
+          {
+            "id": "5a2ef5e6-c140-4fdd-9983-1ec1ba4c6176",
+            "name": "image",
+            "type": "IMAGE",
+            "linkIds": [
+              100,
+              101,
+              102
+            ],
+            "localized_name": "image",
+            "pos": [
+              -640,
+              -200
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "id": "9c9e740a-b079-4f8d-b713-d24470c24cde",
+            "name": "tags",
+            "type": "STRING",
+            "linkIds": [
+              200
+            ],
+            "localized_name": "tags",
+            "pos": [
+              640,
+              -240
+            ]
+          },
+          {
+            "id": "5fe16fb1-01b1-4dd0-a4ba-6adb64857beb",
+            "name": "nsfw_score",
+            "type": "FLOAT",
+            "linkIds": [
+              201
+            ],
+            "localized_name": "nsfw_score",
+            "pos": [
+              640,
+              -220
+            ]
+          },
+          {
+            "id": "e0f9dfc4-0556-479a-a675-823ad9cffdca",
+            "name": "underage_score",
+            "type": "FLOAT",
+            "linkIds": [
+              202
+            ],
+            "localized_name": "underage_score",
+            "pos": [
+              640,
+              -200
+            ]
+          },
+          {
+            "id": "366441fe-1516-4137-a211-b72e9084560a",
+            "name": "child_ref",
+            "type": "BOOLEAN",
+            "linkIds": [
+              203
+            ],
+            "localized_name": "child_ref",
+            "pos": [
+              640,
+              -180
+            ]
+          },
+          {
+            "id": "efb00a83-dba1-4135-bc2e-cd51e8e21e88",
+            "name": "nsfw_tag_ref",
+            "type": "BOOLEAN",
+            "linkIds": [
+              204
+            ],
+            "localized_name": "nsfw_tag_ref",
+            "pos": [
+              640,
+              -160
+            ]
+          },
+          {
+            "id": "11faa787-c9dd-47ff-b973-d272878870e8",
+            "name": "suspect_combo",
+            "type": "BOOLEAN",
+            "linkIds": [
+              205
+            ],
+            "localized_name": "suspect_combo",
+            "pos": [
+              640,
+              -140
+            ]
+          }
+        ],
+        "widgets": [],
+        "nodes": [
+          {
+            "id": 1,
+            "type": "ImgUtilsWD14",
+            "pos": [
+              -620,
+              -380
+            ],
+            "size": [
+              315,
+              150
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "image",
+                "name": "image",
+                "type": "IMAGE",
+                "link": 100
+              },
+              {
+                "localized_name": "general_threshold",
+                "name": "general_threshold",
+                "type": "FLOAT",
+                "widget": {
+                  "name": "general_threshold"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "character_threshold",
+                "name": "character_threshold",
+                "type": "FLOAT",
+                "widget": {
+                  "name": "character_threshold"
+                },
+                "link": null
+              },
+              {
+                "localized_name": "drop_overlap",
+                "name": "drop_overlap",
+                "type": "BOOLEAN",
+                "widget": {
+                  "name": "drop_overlap"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "tags",
+                "name": "tags",
+                "type": "STRING",
+                "slot_index": 0,
+                "links": []
+              },
+              {
+                "localized_name": "json",
+                "name": "json",
+                "type": "STRING",
+                "slot_index": 1,
+                "links": []
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ImgUtilsWD14"
+            },
+            "widgets_values": [
+              0.35,
+              0.85,
+              false
+            ]
+          },
+          {
+            "id": 2,
+            "type": "ImgUtilsClassify",
+            "pos": [
+              -280,
+              -380
+            ],
+            "size": [
+              315,
+              126
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "image",
+                "name": "image",
+                "type": "IMAGE",
+                "link": 101
+              },
+              {
+                "localized_name": "mode",
+                "name": "mode",
+                "type": "COMBO",
+                "widget": {
+                  "name": "mode"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "label",
+                "name": "label",
+                "type": "STRING",
+                "links": []
+              },
+              {
+                "localized_name": "score",
+                "name": "score",
+                "type": "FLOAT",
+                "links": []
+              },
+              {
+                "localized_name": "json",
+                "name": "json",
+                "type": "STRING",
+                "links": []
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ImgUtilsClassify"
+            },
+            "widgets_values": [
+              "NSFW Prediction"
+            ]
+          },
+          {
+            "id": 3,
+            "type": "ImgUtilsClassify",
+            "pos": [
+              60,
+              -380
+            ],
+            "size": [
+              315,
+              126
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "image",
+                "name": "image",
+                "type": "IMAGE",
+                "link": 102
+              },
+              {
+                "localized_name": "mode",
+                "name": "mode",
+                "type": "COMBO",
+                "widget": {
+                  "name": "mode"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "label",
+                "name": "label",
+                "type": "STRING",
+                "links": []
+              },
+              {
+                "localized_name": "score",
+                "name": "score",
+                "type": "FLOAT",
+                "links": []
+              },
+              {
+                "localized_name": "json",
+                "name": "json",
+                "type": "STRING",
+                "links": []
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ImgUtilsClassify"
+            },
+            "widgets_values": [
+              "Anime Teen"
+            ]
+          },
+          {
+            "id": 4,
+            "type": "ImgUtilsLabelContains",
+            "pos": [
+              -280,
+              -250
+            ],
+            "size": [
+              315,
+              82
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "labels",
+                "name": "labels",
+                "type": "STRING",
+                "link": 103
+              },
+              {
+                "localized_name": "search",
+                "name": "search",
+                "type": "STRING",
+                "widget": {
+                  "name": "search"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "boolean",
+                "name": "boolean",
+                "type": "BOOLEAN",
+                "links": []
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ImgUtilsLabelContains"
+            },
+            "widgets_values": [
+              "child"
+            ]
+          },
+          {
+            "id": 5,
+            "type": "ImgUtilsLabelContains",
+            "pos": [
+              60,
+              -250
+            ],
+            "size": [
+              315,
+              82
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "labels",
+                "name": "labels",
+                "type": "STRING",
+                "link": 104
+              },
+              {
+                "localized_name": "search",
+                "name": "search",
+                "type": "STRING",
+                "widget": {
+                  "name": "search"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "boolean",
+                "name": "boolean",
+                "type": "BOOLEAN",
+                "links": []
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ImgUtilsLabelContains"
+            },
+            "widgets_values": [
+              "nsfw"
+            ]
+          },
+          {
+            "id": 6,
+            "type": "ImgUtilsBoolLogic",
+            "pos": [
+              -280,
+              -150
+            ],
+            "size": [
+              315,
+              82
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+              {
+                "localized_name": "a",
+                "name": "a",
+                "type": "BOOLEAN",
+                "link": 105
+              },
+              {
+                "localized_name": "b",
+                "name": "b",
+                "type": "BOOLEAN",
+                "link": 106
+              },
+              {
+                "localized_name": "op",
+                "name": "op",
+                "type": "COMBO",
+                "widget": {
+                  "name": "op"
+                },
+                "link": null
+              }
+            ],
+            "outputs": [
+              {
+                "localized_name": "result",
+                "name": "result",
+                "type": "BOOLEAN",
+                "links": []
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "ImgUtilsBoolLogic"
+            },
+            "widgets_values": [
+              "AND"
+            ]
+          }
+        ],
+        "groups": [],
+        "links": [
+          {
+            "id": 100,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 1,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 101,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 2,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 102,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 3,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 103,
+            "origin_id": 1,
+            "origin_slot": 0,
+            "target_id": 4,
+            "target_slot": 0,
+            "type": "STRING"
+          },
+          {
+            "id": 104,
+            "origin_id": 1,
+            "origin_slot": 0,
+            "target_id": 5,
+            "target_slot": 0,
+            "type": "STRING"
+          },
+          {
+            "id": 105,
+            "origin_id": 4,
+            "origin_slot": 0,
+            "target_id": 6,
+            "target_slot": 0,
+            "type": "BOOLEAN"
+          },
+          {
+            "id": 106,
+            "origin_id": 5,
+            "origin_slot": 0,
+            "target_id": 6,
+            "target_slot": 1,
+            "type": "BOOLEAN"
+          },
+          {
+            "id": 200,
+            "origin_id": 1,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 0,
+            "type": "STRING"
+          },
+          {
+            "id": 201,
+            "origin_id": 2,
+            "origin_slot": 1,
+            "target_id": -20,
+            "target_slot": 1,
+            "type": "FLOAT"
+          },
+          {
+            "id": 202,
+            "origin_id": 3,
+            "origin_slot": 1,
+            "target_id": -20,
+            "target_slot": 2,
+            "type": "FLOAT"
+          },
+          {
+            "id": 203,
+            "origin_id": 4,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 3,
+            "type": "BOOLEAN"
+          },
+          {
+            "id": 204,
+            "origin_id": 5,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 4,
+            "type": "BOOLEAN"
+          },
+          {
+            "id": 205,
+            "origin_id": 6,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 5,
+            "type": "BOOLEAN"
+          }
+        ],
+        "extra": {},
+        "category": "imgutils/Safety"
+      }
+    ]
+  },
+  "extra": {}
+}

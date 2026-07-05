@@ -1,6 +1,11 @@
 MIT License
 
-Copyright (c) 2026 imgutils_nodes contributors
+Copyright (c) 2026 xiaden
+
+This node pack wraps deepghs/imgutils (https://github.com/deepghs/imgutils),
+which is separately MIT-licensed:
+
+    Copyright (c) 2023-2024 deepghs
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
